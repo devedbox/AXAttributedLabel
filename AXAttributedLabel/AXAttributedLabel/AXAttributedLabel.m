@@ -44,7 +44,7 @@ static NSString *const kAXTransit = @"transit";
 
 @interface AXAttributedLabel ()<UITextViewDelegate>
 {
-    @private
+@private
     NSString *_storage;
     UIFont   *_font;
     UIColor  *_textColor;
@@ -141,13 +141,14 @@ static NSString *const kAXTransit = @"transit";
 
 - (void)initializer {
     // Super properties.
+    typeof(self) __weak wsekf = self;
     super.editable     = NO;
     super.selectable   = YES;
     super.scrollsToTop = NO;
-    super.delegate     = self;
+    super.delegate     = wsekf;
     //------------------
-    _font              = [UIFont systemFontOfSize:15];
-    _textColor         = [UIColor blackColor];
+    _font              = super.font?:[UIFont systemFontOfSize:15];
+    _textColor         = super.textColor?:[UIColor blackColor];
     _verticalAlignment = AXAttributedLabelVerticalAlignmentTop;
     self.detectorTypes = AXAttributedLabelDetectorTypeDate|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypePhoneNumber;
     super.textContainerInset = UIEdgeInsetsMake(4, 0, 4, 0);
@@ -173,10 +174,13 @@ static NSString *const kAXTransit = @"transit";
             gesture.enabled = NO;
         }
     }
+    // Set up layout manager.
+    self.layoutManager.allowsNonContiguousLayout = NO;
     // Set up text container.
     self.lineBreakMode = NSLineBreakByTruncatingTail;
     self.textContainer.widthTracksTextView = YES;
     self.textContainer.heightTracksTextView = YES;
+    self.textContainer.lineFragmentPadding = 0.0;
 }
 #pragma mark - Override
 - (BOOL)canBecomeFirstResponder {
@@ -286,6 +290,7 @@ static NSString *const kAXTransit = @"transit";
         [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
         CGSize usedSize = [self.layoutManager usedRectForTextContainer:self.textContainer].size;
         rect_container.size = CGSizeMake(ceil(usedSize.width)+self.textContainerInset.left+self.textContainerInset.right, ceil(usedSize.height+self.textContainerInset.top+self.textContainerInset.bottom));
+        rect_container.size.width = MAX(rect_container.size.width, CGRectGetWidth(self.frame));
         if (CGRectGetHeight(rect_container)>=CGRectGetHeight(self.frame)) {
             // Use AXAttributedLabelVerticalAlignmentTop.
             rect_container.origin.y = .0;
@@ -390,6 +395,11 @@ static NSString *const kAXTransit = @"transit";
     }
 }
 
+- (void)setAttributedText:(NSAttributedString *)attributedText {
+    [super setAttributedText:attributedText];
+    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
+}
+
 - (void)setFont:(UIFont *)font {
     _font = font;
     if (_attributedEnabled) {
@@ -453,10 +463,6 @@ static NSString *const kAXTransit = @"transit";
     [self setNeedsLayout];
 }
 
-- (void)setDelegate:(id<UITextViewDelegate>)delegate {
-    [super setDelegate:self];
-}
-
 - (void)setAllowsPreviewURLs:(BOOL)allowsPreviewURLs {
     _allowsPreviewURLs = allowsPreviewURLs;
     // Disable the preview gesture.
@@ -503,7 +509,7 @@ static NSString *const kAXTransit = @"transit";
     }
     for (UIView *view in _exclusionViews) {
         CGRect frame = view.frame;
-        frame.origin.x += self.textContainerInset.left;
+        frame.origin.x += self.textContainerInset.left-5;
         frame.origin.y += self.textContainerInset.top;
         UIBezierPath *bezier = [UIBezierPath bezierPathWithRoundedRect:view.frame cornerRadius:view.layer.cornerRadius];
         [exclusionPaths addObject:bezier];
@@ -574,6 +580,7 @@ static NSString *const kAXTransit = @"transit";
     }
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[_storage copy]];
     [attributedString addAttribute:NSFontAttributeName value:_font range:NSMakeRange(0, attributedString.length)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0, attributedString.length)];
     NSError *error;
     
     if (_detectorTypes&AXAttributedLabelDetectorTypeImage) {
