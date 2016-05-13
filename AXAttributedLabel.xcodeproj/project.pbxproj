@@ -15,6 +15,9 @@
 		0189A1B41CDC465100D0F0D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0189A1B21CDC465100D0F0D8 /* LaunchScreen.storyboard */; };
 		0189A1BF1CDC465200D0F0D8 /* AXAttributedLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A1BE1CDC465200D0F0D8 /* AXAttributedLabelTests.m */; };
 		0189A1CA1CDC465200D0F0D8 /* AXAttributedLabelUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A1C91CDC465200D0F0D8 /* AXAttributedLabelUITests.m */; };
+		0189A1D91CDC662000D0F0D8 /* AXAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A1D81CDC662000D0F0D8 /* AXAttributedLabel.m */; };
+		0189A1EA1CE1E78300D0F0D8 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0189A1E91CE1E78200D0F0D8 /* avatar.jpg */; };
+		E67108E5D6BD816BF39386E9 /* libPods-AXAttributedLabel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A68999C00B65E506BF1E4C3 /* libPods-AXAttributedLabel.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,12 @@
 		0189A1C51CDC465200D0F0D8 /* AXAttributedLabelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AXAttributedLabelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0189A1C91CDC465200D0F0D8 /* AXAttributedLabelUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AXAttributedLabelUITests.m; sourceTree = "<group>"; };
 		0189A1CB1CDC465200D0F0D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0189A1D71CDC662000D0F0D8 /* AXAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AXAttributedLabel.h; path = AXAttributedLabel/AXAttributedLabel.h; sourceTree = "<group>"; };
+		0189A1D81CDC662000D0F0D8 /* AXAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AXAttributedLabel.m; path = AXAttributedLabel/AXAttributedLabel.m; sourceTree = "<group>"; };
+		0189A1E91CE1E78200D0F0D8 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
+		7A68999C00B65E506BF1E4C3 /* libPods-AXAttributedLabel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AXAttributedLabel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4F07CA6E9515DBB9753D9C2 /* Pods-AXAttributedLabel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AXAttributedLabel.release.xcconfig"; path = "Pods/Target Support Files/Pods-AXAttributedLabel/Pods-AXAttributedLabel.release.xcconfig"; sourceTree = "<group>"; };
+		FCA2CF1D4D938F3BBC706D28 /* Pods-AXAttributedLabel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AXAttributedLabel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AXAttributedLabel/Pods-AXAttributedLabel.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E67108E5D6BD816BF39386E9 /* libPods-AXAttributedLabel.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +95,8 @@
 				0189A1BD1CDC465200D0F0D8 /* AXAttributedLabelTests */,
 				0189A1C81CDC465200D0F0D8 /* AXAttributedLabelUITests */,
 				0189A1A21CDC465100D0F0D8 /* Products */,
+				C4B8AE05DF119E8D24905B78 /* Pods */,
+				A9FDD975D07B6990C99150AE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,8 +117,10 @@
 				0189A1A81CDC465100D0F0D8 /* AppDelegate.m */,
 				0189A1AA1CDC465100D0F0D8 /* ViewController.h */,
 				0189A1AB1CDC465100D0F0D8 /* ViewController.m */,
+				0189A1DA1CDC662400D0F0D8 /* AXAttributedLabel */,
 				0189A1AD1CDC465100D0F0D8 /* Main.storyboard */,
 				0189A1B01CDC465100D0F0D8 /* Assets.xcassets */,
+				0189A1E91CE1E78200D0F0D8 /* avatar.jpg */,
 				0189A1B21CDC465100D0F0D8 /* LaunchScreen.storyboard */,
 				0189A1B51CDC465100D0F0D8 /* Info.plist */,
 				0189A1A41CDC465100D0F0D8 /* Supporting Files */,
@@ -140,6 +154,32 @@
 			path = AXAttributedLabelUITests;
 			sourceTree = "<group>";
 		};
+		0189A1DA1CDC662400D0F0D8 /* AXAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				0189A1D71CDC662000D0F0D8 /* AXAttributedLabel.h */,
+				0189A1D81CDC662000D0F0D8 /* AXAttributedLabel.m */,
+			);
+			name = AXAttributedLabel;
+			sourceTree = "<group>";
+		};
+		A9FDD975D07B6990C99150AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A68999C00B65E506BF1E4C3 /* libPods-AXAttributedLabel.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4B8AE05DF119E8D24905B78 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FCA2CF1D4D938F3BBC706D28 /* Pods-AXAttributedLabel.debug.xcconfig */,
+				B4F07CA6E9515DBB9753D9C2 /* Pods-AXAttributedLabel.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,9 +187,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0189A1CE1CDC465200D0F0D8 /* Build configuration list for PBXNativeTarget "AXAttributedLabel" */;
 			buildPhases = (
+				48A3F656A14ADCCC62B7153D /* 📦 Check Pods Manifest.lock */,
 				0189A19D1CDC465100D0F0D8 /* Sources */,
 				0189A19E1CDC465100D0F0D8 /* Frameworks */,
 				0189A19F1CDC465100D0F0D8 /* Resources */,
+				10B79308C92710A357CF2310 /* 📦 Embed Pods Frameworks */,
+				6CF1E06123D6F092A985B393 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0189A1B41CDC465100D0F0D8 /* LaunchScreen.storyboard in Resources */,
+				0189A1EA1CE1E78300D0F0D8 /* avatar.jpg in Resources */,
 				0189A1B11CDC465100D0F0D8 /* Assets.xcassets in Resources */,
 				0189A1AF1CDC465100D0F0D8 /* Main.storyboard in Resources */,
 			);
@@ -265,6 +309,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		10B79308C92710A357CF2310 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AXAttributedLabel/Pods-AXAttributedLabel-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		48A3F656A14ADCCC62B7153D /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6CF1E06123D6F092A985B393 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AXAttributedLabel/Pods-AXAttributedLabel-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0189A19D1CDC465100D0F0D8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -273,6 +365,7 @@
 				0189A1AC1CDC465100D0F0D8 /* ViewController.m in Sources */,
 				0189A1A91CDC465100D0F0D8 /* AppDelegate.m in Sources */,
 				0189A1A61CDC465100D0F0D8 /* main.m in Sources */,
+				0189A1D91CDC662000D0F0D8 /* AXAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +504,7 @@
 		};
 		0189A1CF1CDC465200D0F0D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCA2CF1D4D938F3BBC706D28 /* Pods-AXAttributedLabel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AXAttributedLabel/Info.plist;
@@ -422,6 +516,7 @@
 		};
 		0189A1D01CDC465200D0F0D8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4F07CA6E9515DBB9753D9C2 /* Pods-AXAttributedLabel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AXAttributedLabel/Info.plist;
@@ -496,6 +591,7 @@
 				0189A1D01CDC465200D0F0D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0189A1D11CDC465200D0F0D8 /* Build configuration list for PBXNativeTarget "AXAttributedLabelTests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +600,7 @@
 				0189A1D31CDC465200D0F0D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0189A1D41CDC465200D0F0D8 /* Build configuration list for PBXNativeTarget "AXAttributedLabelUITests" */ = {
 			isa = XCConfigurationList;
@@ -512,6 +609,7 @@
 				0189A1D61CDC465200D0F0D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

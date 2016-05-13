@@ -1,0 +1,31 @@
+PODS:
+  - AXCollectionViewFlowLayout (1.0.1)
+  - AXExtensions (1.2.8):
+    - MJRefresh (~> 3.0.0)
+    - pop
+  - AXImagePickerController (1.0.4):
+    - AXExtensions
+    - AXPracticalHUD
+  - AXPickerView (1.0.14):
+    - AXCollectionViewFlowLayout
+    - AXImagePickerController
+    - AXPracticalHUD
+  - AXPracticalHUD (1.0.7)
+  - MJRefresh (3.0.8)
+  - pop (1.0.9)
+
+DEPENDENCIES:
+  - AXPickerView
+
+SPEC CHECKSUMS:
+  AXCollectionViewFlowLayout: bf02f0b0733741258e8afe2974b5e02fd645ce08
+  AXExtensions: 39b7e788290e9edb000928f3bf9dea6d67d621c2
+  AXImagePickerController: 74f03dc0af772e07190a91cb8eec3fe81e121ebd
+  AXPickerView: 74bbecd3b897a08fc7da515f6ad6161e15502b23
+  AXPracticalHUD: b0a87276b9830b98ad79c4178f59717b777cfdcc
+  MJRefresh: fafde8f18f4afd66b434331a9beb67a6c0264056
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+
+PODFILE CHECKSUM: 67f08368a5b093cde5293d6b8bf9ce75f74fc5e9
+
+COCOAPODS: 1.0.0.beta.8
