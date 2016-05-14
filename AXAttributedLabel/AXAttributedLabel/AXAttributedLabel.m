@@ -182,6 +182,11 @@ static NSString *const kAXTransit = @"transit";
     self.textContainer.widthTracksTextView = YES;
     self.textContainer.heightTracksTextView = YES;
     self.textContainer.lineFragmentPadding = 0.0;
+    // Set initializer value.
+    [self setAllowsPreviewURLs:_allowsPreviewURLs?:NO];
+    [self setShouldInteractWithURLs:_shouldInteractWithURLs?:NO];
+    [self setShouldInteractWithAttachments:_shouldInteractWithAttachments?:NO];
+    [self setShouldInteractWithExclusionViews:_shouldInteractWithExclusionViews?:NO];
 }
 #pragma mark - Override
 - (BOOL)canBecomeFirstResponder {
