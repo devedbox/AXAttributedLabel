@@ -164,13 +164,14 @@ static NSString *const kAXTransit = @"transit";
                 if ([view isKindOfClass:NSClassFromString(@"UITextSelectionView")]) {
                     [view setHidden:YES];
                     [view setAlpha:0.0];
+                    [view removeFromSuperview];
                 }
             }
         }
     }
     // Disable the pan force gesture.
     for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
-        if ([gesture isKindOfClass:NSClassFromString(@"_UIPreviewInteractionTouchObservingGestureRecognizer")] || [gesture isKindOfClass:NSClassFromString(@"_UIPreviewGestureRecognizer")] || [gesture isKindOfClass:NSClassFromString(@"_UITextSelectionForceGesture")] || [gesture isKindOfClass:NSClassFromString(@"_UIRevealGestureRecognizer")]) {
+        if ([gesture isKindOfClass:NSClassFromString(@"_UIPreviewInteractionTouchObservingGestureRecognizer")] || [gesture isKindOfClass:NSClassFromString(@"_UIPreviewGestureRecognizer")]) {
             gesture.enabled = NO;
         }
     }
@@ -184,6 +185,15 @@ static NSString *const kAXTransit = @"transit";
 }
 #pragma mark - Override
 - (BOOL)canBecomeFirstResponder {
+    UIViewController *viewController = nil;
+    id next = self.nextResponder;
+    while (![next isKindOfClass:[UIViewController class]]) {
+        next = [next nextResponder];
+    }
+    viewController = next;
+    if (viewController) {
+        [viewController setEditing:NO];
+    }
     return NO;
 }
 
@@ -207,6 +217,12 @@ static NSString *const kAXTransit = @"transit";
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    // Disable the pan force gesture.
+    for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+        if ([gesture isKindOfClass:NSClassFromString(@"_UITextSelectionForceGesture")]) {
+            gesture.enabled = NO;
+        }
+    }
     return [super hitTest:point withEvent:event];
 }
 
