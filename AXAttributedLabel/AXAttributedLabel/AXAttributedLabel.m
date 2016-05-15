@@ -42,7 +42,7 @@ static NSString *const kAXURL = @"url";
 static NSString *const kAXAddress = @"address";
 static NSString *const kAXTransit = @"transit";
 
-@interface AXAttributedLabel ()<UITextViewDelegate>
+@interface AXAttributedLabel ()<UITextViewDelegate, UIGestureRecognizerDelegate>
 {
 @private
     NSString *_storage;
@@ -59,7 +59,10 @@ static NSString *const kAXTransit = @"transit";
 /// Links.
 @property(strong, nonatomic) NSMutableArray *links;
 @end
-
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
+@interface AXAttributedLabel ()<UIViewControllerPreviewingDelegate>
+@end
+#endif
 @interface NSURL (AXAttributedLabel)
 /// Result object.
 @property(readwrite, strong, nonatomic) NSTextCheckingResult *result;
@@ -169,12 +172,6 @@ static NSString *const kAXTransit = @"transit";
             }
         }
     }
-    // Disable the pan force gesture.
-    for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
-        if ([gesture isKindOfClass:NSClassFromString(@"_UIPreviewInteractionTouchObservingGestureRecognizer")] || [gesture isKindOfClass:NSClassFromString(@"_UIPreviewGestureRecognizer")]) {
-            gesture.enabled = NO;
-        }
-    }
     // Set up layout manager.
     self.layoutManager.allowsNonContiguousLayout = NO;
     // Set up text container.
@@ -202,6 +199,15 @@ static NSString *const kAXTransit = @"transit";
     return NO;
 }
 
+- (BOOL)canResignFirstResponder {
+    UIView *view = objc_getAssociatedObject(self, @selector(canBecomeFirstResponder));
+    if (view) {
+        [view removeFromSuperview];
+        objc_setAssociatedObject(self, @selector(canBecomeFirstResponder), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return YES;
+}
+
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
     if (action == @selector(paste:) || action == @selector(copy:) || action == @selector(cut:) || action == @selector(select:) || action == @selector(selectAll:)) {
@@ -211,7 +217,7 @@ static NSString *const kAXTransit = @"transit";
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if ([gestureRecognizer isKindOfClass:NSClassFromString(@"_UIRevealGestureRecognizer")]) {
+    if ([gestureRecognizer isMemberOfClass:NSClassFromString(@"_UIRevealGestureRecognizer")]) {
         if (_verticalAlignment != AXAttributedLabelVerticalAlignmentTop) {
             return NO;
         } else {
@@ -537,6 +543,19 @@ static NSString *const kAXTransit = @"transit";
         view.frame = frame;
         [_textContainerView addSubview:view];
         view.userInteractionEnabled = YES;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
+        if ([[[UIDevice currentDevice] systemVersion] intValue]>=9) {
+            UIViewController *viewController = nil;
+            id nextResponsder = self.nextResponder;
+            while (![nextResponsder isKindOfClass:[UIViewController class]]) {
+                nextResponsder = [nextResponsder nextResponder];
+            }
+            viewController = nextResponsder;
+            if (viewController) {
+                [viewController registerForPreviewingWithDelegate:self sourceView:view];
+            }
+        }
+#endif
     }
     [self setExclusionPaths:exclusionPaths];
     if (!_touchView) {
@@ -769,4 +788,13 @@ static NSString *const kAXTransit = @"transit";
     }
     return _shouldInteractWithAttachments;
 }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
+#pragma mark - UIViewControllerPreviewingDelegate
+- (UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
+    return nil;
+}
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
+    
+}
+#endif
 @end
