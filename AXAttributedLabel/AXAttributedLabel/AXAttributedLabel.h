@@ -80,7 +80,7 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 @property(assign, nonatomic, getter=isInteractWithURLs)        IBInspectable BOOL shouldInteractWithURLs;// Defaults is NO.
 @property(assign, nonatomic, getter=isInteractWithAttachments) IBInspectable BOOL shouldInteractWithAttachments;// Defaults is NO.
 
-@property(assign, nonatomic) IBInspectable BOOL showsMenuItems;
+@property(assign, nonatomic) IBInspectable BOOL showsMenuItems;// DEfaults is NO.
 
 + (instancetype)attributedLabel;
 - (CGRect)boundingRectForTextRange:(NSRange)range;
