@@ -43,19 +43,22 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^AXAttributedLabelLinkBlock)(AXAttributedLabel *_Nonnull, NSTextCheckingResult *_Nonnull result);
 typedef void(^AXAttributedLabelExclusionViewsBlock)(AXAttributedLabel *_Nonnull, NSUInteger index);
 
+extern NSString *const kAXAttributedLabelRequestCanBecomeFirstResponsderNotification;
+extern NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification;
+
 NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 /// Delegate.
 @property(assign, nonatomic, nullable) IBOutlet id<AXAttributedLabelDelegate> attribute;
 /// Attributed.
 @property(assign, nonatomic) IBInspectable BOOL attributedEnabled;
 /// Detector for image. If pass null, the label instance will use `[~~~]` rule.
-@property(copy, nonatomic, nullable) IBInspectable NSString    *imageDetector;
+@property(copy, nonatomic, nullable) IBInspectable NSString    *imageDetector UI_APPEARANCE_SELECTOR;
 /// Detector types.
 @property(assign, nonatomic) AXAttributedLabelDetectorTypes     detectorTypes;
 /// Vertical alignment.
 @property(assign, nonatomic) AXAttributedLabelVerticalAlignment verticalAlignment;
 /// Allows preview urls. Defaults is NO. This effects only when the vertical alignment is Top.
-@property(assign, nonatomic) IBInspectable BOOL allowsPreviewURLs;
+@property(assign, nonatomic) IBInspectable BOOL allowsPreviewURLs UI_APPEARANCE_SELECTOR;
 /// Text checking results.
 @property(readonly, copy, nonatomic, nullable) NSArray<NSTextCheckingResult *> *textCheckingResults;
 
@@ -67,7 +70,7 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 // Default value : empty array  An array of UIBezierPath representing the exclusion paths inside the receiver's bounding rect.
 @property(copy, NS_NONATOMIC_IOSONLY) NSArray<UIBezierPath *> *exclusionPaths;
 @property(copy, NS_NONATOMIC_IOSONLY) NSArray<UIView *> *exclusionViews;
-@property(assign, nonatomic) IBInspectable BOOL shouldInteractWithExclusionViews;// Defaults is NO.
+@property(assign, nonatomic) IBInspectable BOOL shouldInteractWithExclusionViews UI_APPEARANCE_SELECTOR;// Defaults is NO.
 @property(copy, nonatomic, nullable) AXAttributedLabelExclusionViewsBlock exclusionViewHandler;
 
 // Blocks.
@@ -77,15 +80,16 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 @property(copy, nonatomic, nullable) AXAttributedLabelLinkBlock addressHandler;// Block to handle address info.
 @property(copy, nonatomic, nullable) AXAttributedLabelLinkBlock transitHandler;// Block to hanle transit info.
 
-@property(assign, nonatomic, getter=isInteractWithURLs)        IBInspectable BOOL shouldInteractWithURLs;// Defaults is NO.
-@property(assign, nonatomic, getter=isInteractWithAttachments) IBInspectable BOOL shouldInteractWithAttachments;// Defaults is NO.
+@property(assign, nonatomic, getter=isInteractWithURLs)        IBInspectable BOOL shouldInteractWithURLs UI_APPEARANCE_SELECTOR;// Defaults is NO.
+@property(assign, nonatomic, getter=isInteractWithAttachments) IBInspectable BOOL shouldInteractWithAttachments UI_APPEARANCE_SELECTOR;// Defaults is NO.
 
-@property(assign, nonatomic) IBInspectable BOOL showsMenuItems;// DEfaults is NO.
+@property(assign, nonatomic) IBInspectable BOOL showsMenuItems UI_APPEARANCE_SELECTOR;// Defaults is NO.
+@property(assign, nonatomic) IBInspectable BOOL dimBackgroundsOnMenuItems UI_APPEARANCE_SELECTOR;// Defaults is YES.
 
 + (instancetype)attributedLabel;
 - (CGRect)boundingRectForTextRange:(NSRange)range;
 
-- (void)setMenuItems:(NSArray<AXMenuItem *>*)menuItems;
+- (void)setMenuItems:(NSArray<AXMenuItem *>*)menuItems UI_APPEARANCE_SELECTOR;
 - (void)addMenuItem:(AXMenuItem *)item,...;
 
 /// Adds a link to a URL for a specified range in the label text.

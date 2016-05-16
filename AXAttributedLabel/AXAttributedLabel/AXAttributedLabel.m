@@ -42,6 +42,9 @@ static NSString *const kAXURL = @"url";
 static NSString *const kAXAddress = @"address";
 static NSString *const kAXTransit = @"transit";
 
+NSString *const kAXAttributedLabelRequestCanBecomeFirstResponsderNotification = @"kAXAttributedLabelRequestCanBecomeFirstResponsderNotification";
+NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = @"kAXAttributedLabelRequestCanResignFirstResponsderNotification";
+
 @interface AXAttributedLabel ()<UITextViewDelegate, UIGestureRecognizerDelegate>
 {
 @private
@@ -193,6 +196,7 @@ static NSString *const kAXTransit = @"transit";
     [self setShouldInteractWithURLs:_shouldInteractWithURLs?:NO];
     [self setShouldInteractWithAttachments:_shouldInteractWithAttachments?:NO];
     [self setShouldInteractWithExclusionViews:_shouldInteractWithExclusionViews?:NO];
+    [self setDimBackgroundsOnMenuItems:_dimBackgroundsOnMenuItems?:YES];
     [self setShowsMenuItems:_showsMenuItems?:NO];
     // Set up long press gesture.
     [self addGestureRecognizer:self.longPressGesture];
@@ -236,17 +240,20 @@ static NSString *const kAXTransit = @"transit";
 }
 
 - (BOOL)canBecomeFirstResponder {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAXAttributedLabelRequestCanBecomeFirstResponsderNotification object:self];
     if (_shouldBecomFirstResponsder) {
-        UIView *view = objc_getAssociatedObject(self, _cmd);
-        if (!view) {
-            view = [[UIView alloc] initWithFrame:self.bounds];
-            view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
-            view.alpha = 0;
-            [self addSubview:view];
-            [UIView animateWithDuration:0.1 animations:^{
-                view.alpha = 1.0;
-            }];
-            objc_setAssociatedObject(self, _cmd, view, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        if (_dimBackgroundsOnMenuItems) {
+            UIView *view = objc_getAssociatedObject(self, _cmd);
+            if (!view) {
+                view = [[UIView alloc] initWithFrame:self.bounds];
+                view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+                view.alpha = 0;
+                [self addSubview:view];
+                [UIView animateWithDuration:0.1 animations:^{
+                    view.alpha = 1.0;
+                }];
+                objc_setAssociatedObject(self, _cmd, view, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }
         }
         return YES;
     }
@@ -263,14 +270,17 @@ static NSString *const kAXTransit = @"transit";
 }
 
 - (BOOL)canResignFirstResponder {
-    UIView *view = objc_getAssociatedObject(self, @selector(canBecomeFirstResponder));
-    if (view) {
-        [UIView animateWithDuration:0.1 animations:^{
-            view.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [view removeFromSuperview];
-            objc_setAssociatedObject(self, @selector(canBecomeFirstResponder), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAXAttributedLabelRequestCanResignFirstResponsderNotification object:self];
+    if (_dimBackgroundsOnMenuItems) {
+        UIView *view = objc_getAssociatedObject(self, @selector(canBecomeFirstResponder));
+        if (view) {
+            [UIView animateWithDuration:0.1 animations:^{
+                view.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                [view removeFromSuperview];
+                objc_setAssociatedObject(self, @selector(canBecomeFirstResponder), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }];
+        }
     }
     return YES;
 }
