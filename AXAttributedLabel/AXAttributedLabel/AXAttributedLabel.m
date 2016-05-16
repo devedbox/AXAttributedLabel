@@ -55,9 +55,17 @@ static NSString *const kAXTransit = @"transit";
     UIView  *_touchView;
     /// Touch begined.
     BOOL     _touchBegan;
+    /// Should becom first responsder.
+    BOOL     _shouldBecomFirstResponsder;
+    /// Menu items.
+    NSArray<UIMenuItem *>* _menuItems;
+    /// Original menu items.
+    NSArray<AXMenuItem *>* _originalMenuItems;
 }
 /// Links.
 @property(strong, nonatomic) NSMutableArray *links;
+/// Long press gesture.
+@property(strong, nonatomic) UILongPressGestureRecognizer *longPressGesture;
 @end
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
 @interface AXAttributedLabel ()<UIViewControllerPreviewingDelegate>
@@ -154,8 +162,9 @@ static NSString *const kAXTransit = @"transit";
     _textColor         = super.textColor?:[UIColor blackColor];
     _verticalAlignment = AXAttributedLabelVerticalAlignmentTop;
     self.detectorTypes = AXAttributedLabelDetectorTypeDate|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypePhoneNumber;
-    super.textContainerInset = UIEdgeInsetsMake(4, 0, 4, 0);
     self.userInteractionEnabled = YES;
+    self.clipsToBounds = YES;
+    super.textContainerInset = UIEdgeInsetsMake(4, 0, 4, 0);
     // Set the image indicator view to hidden and get the refrence of the text container view.
     for (UIView *view in self.subviews) {
         if ([view isKindOfClass:[UIImageView class]]) {
@@ -176,17 +185,71 @@ static NSString *const kAXTransit = @"transit";
     self.layoutManager.allowsNonContiguousLayout = NO;
     // Set up text container.
     self.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.textContainer.widthTracksTextView = YES;
+    self.textContainer.widthTracksTextView  = YES;
     self.textContainer.heightTracksTextView = YES;
-    self.textContainer.lineFragmentPadding = 0.0;
+    self.textContainer.lineFragmentPadding  = 0.0;
     // Set initializer value.
     [self setAllowsPreviewURLs:_allowsPreviewURLs?:NO];
     [self setShouldInteractWithURLs:_shouldInteractWithURLs?:NO];
     [self setShouldInteractWithAttachments:_shouldInteractWithAttachments?:NO];
     [self setShouldInteractWithExclusionViews:_shouldInteractWithExclusionViews?:NO];
+    [self setShowsMenuItems:_showsMenuItems?:NO];
+    // Set up long press gesture.
+    [self addGestureRecognizer:self.longPressGesture];
+    // Add notifications.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMenuControllerWillHideNotification:) name:UIMenuControllerWillHideMenuNotification object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - Override
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    if ([[[NSStringFromSelector(aSelector) componentsSeparatedByString:@"_"] firstObject] isEqualToString:@"menuItem"]) {
+        return self;
+    }
+    return [super forwardingTargetForSelector:aSelector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation {
+    NSInteger index = [[[NSStringFromSelector(anInvocation.selector) componentsSeparatedByString:@"_"] lastObject] integerValue];
+    if (index != NSNotFound && index >= 0 && index <= _originalMenuItems.count-1) {
+        AXMenuItem *item = _originalMenuItems[index];
+        if (item.handler) {
+            item.handler(self, item);
+        }
+    }
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
+    if ([[[NSStringFromSelector(aSelector) componentsSeparatedByString:@"_"] firstObject] isEqualToString:@"menuItem"]) {
+        return [self.class instanceMethodSignatureForSelector:@selector(__didSelectMenuItem)];
+    }
+    return [super methodSignatureForSelector:aSelector];
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    if ([[[NSStringFromSelector(aSelector) componentsSeparatedByString:@"_"] firstObject] isEqualToString:@"menuItem"]) {
+        return YES;
+    }
+    return [super respondsToSelector:aSelector];
+}
+
 - (BOOL)canBecomeFirstResponder {
+    if (_shouldBecomFirstResponsder) {
+        UIView *view = objc_getAssociatedObject(self, _cmd);
+        if (!view) {
+            view = [[UIView alloc] initWithFrame:self.bounds];
+            view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+            view.alpha = 0;
+            [self addSubview:view];
+            [UIView animateWithDuration:0.1 animations:^{
+                view.alpha = 1.0;
+            }];
+            objc_setAssociatedObject(self, _cmd, view, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
+        return YES;
+    }
     UIViewController *viewController = nil;
     id next = self.nextResponder;
     while (![next isKindOfClass:[UIViewController class]]) {
@@ -202,14 +265,21 @@ static NSString *const kAXTransit = @"transit";
 - (BOOL)canResignFirstResponder {
     UIView *view = objc_getAssociatedObject(self, @selector(canBecomeFirstResponder));
     if (view) {
-        [view removeFromSuperview];
-        objc_setAssociatedObject(self, @selector(canBecomeFirstResponder), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [UIView animateWithDuration:0.1 animations:^{
+            view.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [view removeFromSuperview];
+            objc_setAssociatedObject(self, @selector(canBecomeFirstResponder), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }];
     }
     return YES;
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
+    if ([[[NSStringFromSelector(action) componentsSeparatedByString:@"_"] firstObject] isEqualToString:@"menuItem"]) {
+        return YES;
+    }
     if (action == @selector(paste:) || action == @selector(copy:) || action == @selector(cut:) || action == @selector(select:) || action == @selector(selectAll:)) {
         return NO;
     }
@@ -234,6 +304,8 @@ static NSString *const kAXTransit = @"transit";
             gesture.enabled = NO;
         }
     }
+    // Hide the menu controller if needed.
+    [self updateMenuControllerVisiable];
     return [super hitTest:point withEvent:event];
 }
 
@@ -405,6 +477,19 @@ static NSString *const kAXTransit = @"transit";
     [results addObjectsFromArray:[other matchesInString:_storage options:0 range:NSMakeRange(0, _storage.length)]];
     return results;
 }
+
+- (UILongPressGestureRecognizer *)longPressGesture {
+    if (_longPressGesture) return _longPressGesture;
+    _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    _longPressGesture.minimumPressDuration = 0.3;
+    // Required other gesture failure.
+    for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+        if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
+            [gesture requireGestureRecognizerToFail:_longPressGesture];
+        }
+    }
+    return _longPressGesture;
+}
 #pragma mark - Setters
 - (void)setText:(NSString *)text {
     // Store the copy version of text.
@@ -568,7 +653,37 @@ static NSString *const kAXTransit = @"transit";
     }
 }
 
+- (void)setShowsMenuItems:(BOOL)showsMenuItems {
+    _showsMenuItems = showsMenuItems;
+    self.longPressGesture.enabled = showsMenuItems;
+}
+
 #pragma mark - Public
+- (void)setMenuItems:(NSArray<AXMenuItem *> *)menuItems {
+    _originalMenuItems = [menuItems copy];
+    NSMutableArray *__menuItems = [@[] mutableCopy];
+    for (NSInteger i = 0; i < _originalMenuItems.count; i++) {
+        [__menuItems addObject:[[UIMenuItem alloc] initWithTitle:_originalMenuItems[i].title action:NSSelectorFromString([NSString stringWithFormat:@"menuItem_%@", @(i)])]];
+    }
+    _menuItems = [__menuItems copy];
+}
+
+- (void)addMenuItem:(AXMenuItem *)item, ... {
+    va_list args;
+    va_start(args, item);
+    AXMenuItem *_item;
+    if (!_originalMenuItems) {
+        _originalMenuItems = @[];
+    }
+    NSMutableArray *items = [_originalMenuItems mutableCopy];
+    [items addObject:item];
+    while ((_item = va_arg(args, AXMenuItem *))) {
+        [items addObject:_item];
+    }
+    va_end(args);
+    [self setMenuItems:items];
+}
+
 - (void)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result {
     if (!_links) {
         _links = [@[] mutableCopy];
@@ -722,6 +837,44 @@ static NSString *const kAXTransit = @"transit";
     }
 }
 
+- (void)handleLongPressGesture:(UILongPressGestureRecognizer *)gesture {
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+            _shouldBecomFirstResponsder = YES;
+            if ([self becomeFirstResponder]) {
+                UIMenuController *menuController = [UIMenuController sharedMenuController];
+                [menuController setMenuItems:_menuItems];
+                [menuController setTargetRect:self.bounds inView:self];
+                [menuController setMenuVisible:YES animated:YES];
+            }
+            break;
+        default:
+            _shouldBecomFirstResponsder = NO;
+            break;
+    }
+}
+
+- (void)__didSelectMenuItem{}
+#pragma mark -
+- (void)setupNormalMenuController {
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    if (menu.isMenuVisible) {
+        [menu setMenuVisible:NO animated:YES];
+    }
+}
+
+- (void)updateMenuControllerVisiable {
+    if ([self isFirstResponder]) {
+        [self resignFirstResponder];
+    }
+    [self setupNormalMenuController];
+}
+
+- (void)handleMenuControllerWillHideNotification:(NSNotification *)aNotification {
+    if ([self isFirstResponder]) {
+        [self resignFirstResponder];
+    }
+}
 #pragma mark - UITextViewDelegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {return NO;}
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {return NO;}
@@ -797,4 +950,19 @@ static NSString *const kAXTransit = @"transit";
     
 }
 #endif
+@end
+
+@implementation AXMenuItem
+@synthesize title = _title;
+- (instancetype)initWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler {
+    if (self = [super init]) {
+        _title = [title copy];
+        _handler = [handler copy];
+    }
+    return self;
+}
+
++ (instancetype)itemWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler {
+    return [[AXMenuItem alloc] initWithTitle:title handler:handler];
+}
 @end

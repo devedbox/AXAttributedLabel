@@ -31,6 +31,29 @@
     _label.exclusionViews = @[imageView];
     [_label addLinkToPhoneNumber:@"15680002585" withRange:NSMakeRange(0, 11)];
     _label.detectorTypes |= AXAttributedLabelDetectorTypeImage|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypeTransitInformation|AXAttributedLabelDetectorTypeAddress;
+    _label.showsMenuItems = YES;
+    AXMenuItem *item = [AXMenuItem itemWithTitle:@"aaa" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"aaa");
+    }];
+    AXMenuItem *item1 = [AXMenuItem itemWithTitle:@"bbb" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"bbb");
+    }];
+    AXMenuItem *item2 = [AXMenuItem itemWithTitle:@"ccc" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"ccc");
+    }];
+    AXMenuItem *item3 = [AXMenuItem itemWithTitle:@"ddd" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"ddd");
+    }];
+    AXMenuItem *item4 = [AXMenuItem itemWithTitle:@"eee" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"eee");
+    }];
+    AXMenuItem *item5 = [AXMenuItem itemWithTitle:@"fff" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"fff");
+    }];
+    AXMenuItem *item6 = [AXMenuItem itemWithTitle:@"hhh" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"hhh");
+    }];
+    [_label setMenuItems:@[item, item1, item2, item3, item4, item5, item6]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,5 +104,10 @@
 }
 - (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectExclusionViewAtIndex:(NSUInteger)index {
     NSLog(@"selected exclusion view at index: %@", @(index));
+}
+
+#pragma mark - Actions
+- (void)test:(id)sender {
+    
 }
 @end

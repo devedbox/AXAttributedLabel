@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, AXAttributedLabelVerticalAlignment) {
 
 @protocol AXAttributedLabelDelegate;
 @class    AXAttributedLabel;
+@class    AXMenuItem;
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^AXAttributedLabelLinkBlock)(AXAttributedLabel *_Nonnull, NSTextCheckingResult *_Nonnull result);
@@ -79,8 +80,13 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 @property(assign, nonatomic, getter=isInteractWithURLs)        IBInspectable BOOL shouldInteractWithURLs;// Defaults is NO.
 @property(assign, nonatomic, getter=isInteractWithAttachments) IBInspectable BOOL shouldInteractWithAttachments;// Defaults is NO.
 
+@property(assign, nonatomic) IBInspectable BOOL showsMenuItems;
+
 + (instancetype)attributedLabel;
 - (CGRect)boundingRectForTextRange:(NSRange)range;
+
+- (void)setMenuItems:(NSArray<AXMenuItem *>*)menuItems;
+- (void)addMenuItem:(AXMenuItem *)item,...;
 
 /// Adds a link to a URL for a specified range in the label text.
 ///
@@ -175,6 +181,18 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 /// @param attributedLabel The label whose link was selected.
 /// @param index The index of selected exclusion view.
 - (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectExclusionViewAtIndex:(NSUInteger)index;
+@end
+
+typedef void(^AXMenuItemBlock)(AXAttributedLabel *_Nonnull label, AXMenuItem *_Nonnull item);
+
+@interface AXMenuItem : NSObject
+/// Title.
+@property(readonly, nonatomic) NSString *title;
+/// Handler.
+@property(copy, nonatomic, nullable) AXMenuItemBlock handler;
+
+- (instancetype)initWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler;
++ (instancetype)itemWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler;
 @end
 
 @interface AXAttributedLabel (Unavailable)
