@@ -16,14 +16,14 @@ typedef NS_OPTIONS(uint64_t, AXAttributedLabelDetectorType) {    // a single typ
     AXAttributedLabelDetectorTypeTransitInformation    = NSTextCheckingTypeTransitInformation,
     AXAttributedLabelDetectorTypeImage                 = 1ULL << 21
     /* No implementation.
-    AXAttributedLabelDetectorTypeOrthography           = NSTextCheckingTypeOrthography,
-    AXAttributedLabelDetectorTypeSpelling              = NSTextCheckingTypeSpelling,
-    AXAttributedLabelDetectorTypeGrammar               = NSTextCheckingTypeGrammar,
-    AXAttributedLabelDetectorTypeQuote                 = NSTextCheckingTypeQuote,
-    AXAttributedLabelDetectorTypeDash                  = NSTextCheckingTypeDash,
-    AXAttributedLabelDetectorTypeReplacement           = NSTextCheckingTypeReplacement,
-    AXAttributedLabelDetectorTypeCorrection            = NSTextCheckingTypeCorrection,
-    AXAttributedLabelDetectorTypeRegularExpression     = NSTextCheckingTypeRegularExpression,
+     AXAttributedLabelDetectorTypeOrthography           = NSTextCheckingTypeOrthography,
+     AXAttributedLabelDetectorTypeSpelling              = NSTextCheckingTypeSpelling,
+     AXAttributedLabelDetectorTypeGrammar               = NSTextCheckingTypeGrammar,
+     AXAttributedLabelDetectorTypeQuote                 = NSTextCheckingTypeQuote,
+     AXAttributedLabelDetectorTypeDash                  = NSTextCheckingTypeDash,
+     AXAttributedLabelDetectorTypeReplacement           = NSTextCheckingTypeReplacement,
+     AXAttributedLabelDetectorTypeCorrection            = NSTextCheckingTypeCorrection,
+     AXAttributedLabelDetectorTypeRegularExpression     = NSTextCheckingTypeRegularExpression,
      */
 };
 
@@ -67,6 +67,10 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 /// Number of lines. Defaults is 0 means no limits.
 @property(assign, NS_NONATOMIC_IOSONLY) NSUInteger      numberOfLines;
 
+// Support for constraint-based layout (auto layout)
+// If nonzero, this is used when determining -intrinsicContentSize for multiline labels
+@property(nonatomic) IBInspectable CGFloat preferredMaxLayoutWidth;
+
 // Default value : empty array  An array of UIBezierPath representing the exclusion paths inside the receiver's bounding rect.
 @property(copy, NS_NONATOMIC_IOSONLY) NSArray<UIBezierPath *> *exclusionPaths;
 @property(copy, NS_NONATOMIC_IOSONLY) NSArray<UIView *> *exclusionViews;
@@ -88,6 +92,7 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 
 + (instancetype)attributedLabel;
 - (CGRect)boundingRectForTextRange:(NSRange)range;
++ (CGSize)boundingSizeForLabelWithText:(NSString *)text font:(UIFont *_Nonnull)font exclusionPaths:(NSArray<UIBezierPath *> *_Nullable)exclusionPaths perferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth;
 
 - (void)setMenuItems:(NSArray<AXMenuItem *>*)menuItems UI_APPEARANCE_SELECTOR;
 - (void)addMenuItem:(AXMenuItem *)item,...;
@@ -197,6 +202,23 @@ typedef void(^AXMenuItemBlock)(AXAttributedLabel *_Nonnull label, AXMenuItem *_N
 
 - (instancetype)initWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler;
 + (instancetype)itemWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler;
+@end
+
+@interface AXAttributedStringOptions : NSObject
+/// Attributes.
+@property(strong, nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
+/// Image detector pattern.
+@property(copy, nonatomic, nullable) NSString *imageDetectorPattern;
+/// Should interact with URLs.
+@property(assign, nonatomic) BOOL shouldInteractWithURLs;
+/// Detector types.
+@property(assign, nonatomic) AXAttributedLabelDetectorTypes detectorTypes;
+/// Other links.
+@property(copy, nonatomic, nullable) NSArray<NSTextCheckingResult *> *results;
+/// Font.
+@property(strong, nonatomic) UIFont *font;
+/// Attributed label.
+@property(weak, nonatomic, nullable) AXAttributedLabel *attributedLabel;
 @end
 
 @interface AXAttributedLabel (Unavailable)

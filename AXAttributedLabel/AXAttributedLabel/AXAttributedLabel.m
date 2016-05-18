@@ -45,7 +45,7 @@ static NSString *const kAXTransit = @"transit";
 NSString *const kAXAttributedLabelRequestCanBecomeFirstResponsderNotification = @"kAXAttributedLabelRequestCanBecomeFirstResponsderNotification";
 NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = @"kAXAttributedLabelRequestCanResignFirstResponsderNotification";
 
-@interface AXAttributedLabel ()<UITextViewDelegate, UIGestureRecognizerDelegate>
+@interface AXAttributedLabel ()<UITextViewDelegate, UIGestureRecognizerDelegate, NSLayoutManagerDelegate>
 {
 @private
     NSString *_storage;
@@ -186,11 +186,13 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     }
     // Set up layout manager.
     self.layoutManager.allowsNonContiguousLayout = NO;
+    self.layoutManager.delegate = self;
     // Set up text container.
     self.lineBreakMode = NSLineBreakByTruncatingTail;
     self.textContainer.widthTracksTextView  = YES;
     self.textContainer.heightTracksTextView = YES;
     self.textContainer.lineFragmentPadding  = 0.0;
+    self.numberOfLines = 0;
     // Set initializer value.
     [self setAllowsPreviewURLs:_allowsPreviewURLs?:NO];
     [self setShouldInteractWithURLs:_shouldInteractWithURLs?:NO];
@@ -381,6 +383,9 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
+    if (self.translatesAutoresizingMaskIntoConstraints == NO) {
+        [self invalidateIntrinsicContentSize];
+    }
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
@@ -391,10 +396,23 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     return susize;
 }
 
+- (CGSize)intrinsicContentSize {
+    CGSize size = [super intrinsicContentSize];
+    if (size.width>0&&size.height>0) {
+        return size;
+    }
+    
+    size = [[self class] boundingSizeForLabelWithText:_storage font:_font exclusionPaths:self.exclusionPaths perferredMaxLayoutWidth:_preferredMaxLayoutWidth];
+    
+    return CGSizeMake(ceil(size.width)+self.textContainerInset.left+self.textContainerInset.right, ceil(size.height)+self.textContainerInset.top+self.textContainerInset.bottom);
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     // Layout the text container view.
     if (_textContainerView) {
+        self.textContainer.size = self.bounds.size;
+        [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
         CGRect rect_container = _textContainerView.frame;
         [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
         CGSize usedSize = [self.layoutManager usedRectForTextContainer:self.textContainer].size;
@@ -520,10 +538,11 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
     [super setAttributedText:attributedText];
     [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
+    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setFont:(UIFont *)font {
-    _font = font;
+    _font = font?:_font;
     if (_attributedEnabled) {
         // Set the font of attributed text.
         self.attributedText = [self attributedString];
@@ -533,13 +552,18 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 }
 
 - (void)setTextColor:(UIColor *)textColor {
-    _textColor = textColor;
+    _textColor = textColor?:_textColor;
     if (_attributedEnabled) {
         // Set the text color of attributed text.
         self.attributedText = [self attributedString];
     } else {
         super.textColor = textColor;
     }
+}
+
+- (void)setTextContainerInset:(UIEdgeInsets)textContainerInset {
+    [super setTextContainerInset:textContainerInset];
+    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setAttributedEnabled:(BOOL)attributedEnabled {
@@ -738,104 +762,156 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 - (CGRect)boundingRectForTextRange:(NSRange)range {
     return [self.layoutManager boundingRectForGlyphRange:range inTextContainer:self.textContainer];
 }
+
++ (CGSize)boundingSizeForLabelWithText:(NSString *)text font:(UIFont *_Nonnull)font exclusionPaths:(NSArray<UIBezierPath *> *)exclusionPaths perferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth {
+    NSTextStorage *textStorage = [NSTextStorage new];
+    NSLayoutManager *layoutManager = [NSLayoutManager new];
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
+    
+    layoutManager.allowsNonContiguousLayout = NO;
+    
+    textContainer.maximumNumberOfLines = 0;
+    textContainer.widthTracksTextView = YES;
+    textContainer.heightTracksTextView = YES;
+    textContainer.lineFragmentPadding = .0;
+    textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [layoutManager addTextContainer:textContainer];
+    [textStorage addLayoutManager:layoutManager];
+    
+    AXAttributedStringOptions *options = [AXAttributedStringOptions new];
+    options.detectorTypes = [[self appearance] detectorTypes]|(AXAttributedLabelDetectorTypeDate|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypeImage|AXAttributedLabelDetectorTypeAddress|AXAttributedLabelDetectorTypePhoneNumber|AXAttributedLabelDetectorTypeTransitInformation);
+    options.imageDetectorPattern = [[self appearance] imageDetector]?:kAXImageDetector;
+    options.attributes = @{NSForegroundColorAttributeName:[[self appearance] textColor]?:[UIColor blackColor]};
+    options.shouldInteractWithURLs = YES;
+    options.results = nil;
+    options.font = font;
+    options.attributedLabel = nil;
+    
+    [textStorage setAttributedString:[[self class] attributedStringWithString:text options:options]];
+    
+    if (exclusionPaths.count > 0) {
+        textContainer.exclusionPaths = [exclusionPaths copy];
+    }
+    
+    [layoutManager ensureLayoutForTextContainer:textContainer];
+    CGSize size = [layoutManager usedRectForTextContainer:textContainer].size;
+    
+    return size;
+}
 #pragma mark - Private
-- (NSAttributedString *)attributedString {
-    if (_storage.length == 0) {
++ (NSAttributedString *)attributedStringWithString:(NSString *)string options:(AXAttributedStringOptions *)options {
+    if (string.length == 0) {
         return nil;
     }
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[_storage copy]];
-    [attributedString addAttribute:NSFontAttributeName value:_font range:NSMakeRange(0, attributedString.length)];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0, attributedString.length)];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[string copy]];
+    [attributedString setAttributes:options.attributes range:NSMakeRange(0, string.length)];
+    [attributedString addAttribute:NSFontAttributeName value:options.font range:NSMakeRange(0, string.length)];
+    
     NSError *error;
     
-    if (_detectorTypes&AXAttributedLabelDetectorTypeImage) {
+    if (options.detectorTypes&AXAttributedLabelDetectorTypeImage) {
         static NSRegularExpression *imageRE;
-        imageRE = imageRE?:[[NSRegularExpression alloc] initWithPattern:_imageDetector?_imageDetector:kAXImageDetector options:NSRegularExpressionCaseInsensitive error:&error];
+        imageRE = imageRE?:[[NSRegularExpression alloc] initWithPattern:options.imageDetectorPattern?options.imageDetectorPattern:kAXImageDetector options:NSRegularExpressionCaseInsensitive error:&error];
         NSAssert(error == nil, @"%@", error);
-        [imageRE enumerateMatchesInString:_storage options:0 range:NSMakeRange(0, _storage.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+        [imageRE enumerateMatchesInString:string options:0 range:NSMakeRange(0, string.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
             AXTextAttachment *attachment = [[AXTextAttachment alloc] initWithData:nil ofType:nil];
-            attachment.fontSize = _font.pointSize;
-            NSString *imageString = [_storage substringWithRange:result.range];
-            attachment.image = [_attribute imageAttachmentForAttributedLabel:self result:[result copy]];
+            attachment.fontSize = [options.font pointSize];
+            NSString *imageString = [string substringWithRange:result.range];
+            if (options.attributedLabel.attribute && [options.attributedLabel.attribute respondsToSelector:@selector(imageAttachmentForAttributedLabel:result:)]) {
+                attachment.image = [options.attributedLabel.attribute imageAttachmentForAttributedLabel:options.attributedLabel result:[result copy]];
+            }
             NSAttributedString *attachString = [NSAttributedString attributedStringWithAttachment:attachment];
             NSRange targetRange = [attributedString.string rangeOfString:imageString];
             [attributedString replaceCharactersInRange:targetRange withAttributedString:attachString];
-            [attributedString addAttribute:NSFontAttributeName value:_font range:NSMakeRange(targetRange.location, 1)];
+            [attributedString addAttribute:NSFontAttributeName value:options.font range:NSMakeRange(targetRange.location, 1)];
         }];
-    } if (_detectorTypes&AXAttributedLabelDetectorTypeTransitInformation) {
+    } if (options.detectorTypes&AXAttributedLabelDetectorTypeTransitInformation) {
         // Transit information detector.
         static NSDataDetector *transitInformation;
         transitInformation = transitInformation?:[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeTransitInformation error:&error];
         NSAssert(error == nil, @"%@", error);
-        [transitInformation enumerateMatchesInString:_storage options:0 range:NSMakeRange(0, _storage.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-            NSString *string = [_storage substringWithRange:result.range];
+        [transitInformation enumerateMatchesInString:string options:0 range:NSMakeRange(0, string.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+            NSString *_string = [string substringWithRange:result.range];
             NSURL *url = [NSURL URLWithFlag:kAXTransit urlString:nil result:[result copy]];
-            NSAttributedString *attr = [[NSAttributedString alloc] initWithString:string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:_font}];
-            NSRange targetRange = [attributedString.string rangeOfString:string];
+            NSAttributedString *attr = [[NSAttributedString alloc] initWithString:_string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:options.font}];
+            NSRange targetRange = [attributedString.string rangeOfString:_string];
             [attributedString replaceCharactersInRange:targetRange withAttributedString:attr];
         }];
     }
-    if (!_shouldInteractWithURLs) {
-        if (_detectorTypes&AXAttributedLabelDetectorTypeDate) {
+    if (!options.shouldInteractWithURLs) {
+        if (options.detectorTypes&AXAttributedLabelDetectorTypeDate) {
             // Date detecor.
             static NSDataDetector *date;
             date = date?:[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeDate error:&error];
             NSAssert(error == nil, @"%@", error);
-            [date enumerateMatchesInString:_storage options:0 range:NSMakeRange(0, _storage.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-                NSString *string = [_storage substringWithRange:result.range];
-                NSString *dateStr = string;
+            [date enumerateMatchesInString:string options:0 range:NSMakeRange(0, string.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                NSString *_string = [string substringWithRange:result.range];
+                NSString *dateStr = _string;
                 NSURL *url = [NSURL URLWithFlag:kAXDate urlString:nil result:[result copy]];
-                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:string attributes:@{NSLinkAttributeName:url?:dateStr,NSFontAttributeName:_font}];
-                NSRange targetRange = [attributedString.string rangeOfString:string];
+                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:_string attributes:@{NSLinkAttributeName:url?:dateStr,NSFontAttributeName:options.font}];
+                NSRange targetRange = [attributedString.string rangeOfString:_string];
                 [attributedString replaceCharactersInRange:targetRange withAttributedString:attr];
             }];
-        } if (_detectorTypes&AXAttributedLabelDetectorTypeLink) {
+        } if (options.detectorTypes&AXAttributedLabelDetectorTypeLink) {
             // Link detecor.
             static NSDataDetector *link;
             link = link?:[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
             NSAssert(error == nil, @"%@", error);
-            [link enumerateMatchesInString:_storage options:0 range:NSMakeRange(0, _storage.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-                NSString *string = [_storage substringWithRange:result.range];
-                NSURL *url = [NSURL URLWithFlag:kAXURL urlString:string result:[result copy]];
-                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:_font}];
-                NSRange targetRange = [attributedString.string rangeOfString:string];
+            [link enumerateMatchesInString:string options:0 range:NSMakeRange(0, string.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                NSString *_string = [string substringWithRange:result.range];
+                NSURL *url = [NSURL URLWithFlag:kAXURL urlString:_string result:[result copy]];
+                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:_string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:options.font}];
+                NSRange targetRange = [attributedString.string rangeOfString:_string];
                 [attributedString replaceCharactersInRange:targetRange withAttributedString:attr];
             }];
-        } if (_detectorTypes&AXAttributedLabelDetectorTypeAddress) {
+        } if (options.detectorTypes&AXAttributedLabelDetectorTypeAddress) {
             // Address detecor.
             static NSDataDetector *address;
             address = address?:[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress error:&error];
             NSAssert(error == nil, @"%@", error);
-            [address enumerateMatchesInString:_storage options:0 range:NSMakeRange(0, _storage.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-                NSString *string = [_storage substringWithRange:result.range];
+            [address enumerateMatchesInString:string options:0 range:NSMakeRange(0, string.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                NSString *_string = [string substringWithRange:result.range];
                 NSURL *url = [NSURL URLWithFlag:kAXAddress urlString:nil result:[result copy]];
-                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:_font}];
-                NSRange targetRange = [attributedString.string rangeOfString:string];
+                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:_string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:options.font}];
+                NSRange targetRange = [attributedString.string rangeOfString:_string];
                 [attributedString replaceCharactersInRange:targetRange withAttributedString:attr];
             }];
-        } if (_detectorTypes&AXAttributedLabelDetectorTypePhoneNumber) {
+        } if (options.detectorTypes&AXAttributedLabelDetectorTypePhoneNumber) {
             // Phone number detecor.
             static NSDataDetector *phone;
             phone = phone?:[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypePhoneNumber error:&error];
             NSAssert(error == nil, @"%@", error);
-            [phone enumerateMatchesInString:_storage options:0 range:NSMakeRange(0, _storage.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-                NSString *string = [_storage substringWithRange:result.range];
-                NSURL *url = [NSURL URLWithFlag:kAXPhone urlString:[NSString stringWithFormat:@"tel:%@",string] result:[result copy]];
-                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:_font}];
-                NSRange targetRange = [attributedString.string rangeOfString:string];
+            [phone enumerateMatchesInString:string options:0 range:NSMakeRange(0, string.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                NSString *_string = [string substringWithRange:result.range];
+                NSURL *url = [NSURL URLWithFlag:kAXPhone urlString:[NSString stringWithFormat:@"tel:%@",_string] result:[result copy]];
+                NSAttributedString *attr = [[NSAttributedString alloc] initWithString:_string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:options.font}];
+                NSRange targetRange = [attributedString.string rangeOfString:_string];
                 [attributedString replaceCharactersInRange:targetRange withAttributedString:attr];
             }];
         }
     }
     
-    for (NSTextCheckingResult *result in _links) {
-        NSString *string = [_storage substringWithRange:result.range];
+    for (NSTextCheckingResult *result in options.results) {
+        NSString *_string = [string substringWithRange:result.range];
         NSURL *url = [NSURL URLWithFlag:result.flagedUrl.flag urlString:result.flagedUrl.absoluteString result:[result copy]];
-        NSAttributedString *attr = [[NSAttributedString alloc] initWithString:string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:_font}];
-        NSRange targetRange = [attributedString.string rangeOfString:string];
+        NSAttributedString *attr = [[NSAttributedString alloc] initWithString:_string attributes:@{NSLinkAttributeName:url,NSFontAttributeName:options.font}];
+        NSRange targetRange = [attributedString.string rangeOfString:_string];
         [attributedString replaceCharactersInRange:targetRange withAttributedString:attr];
     }
     return attributedString;
+}
+
+- (NSAttributedString *)attributedString {
+    AXAttributedStringOptions *options = [AXAttributedStringOptions new];
+    options.detectorTypes = _detectorTypes;
+    options.imageDetectorPattern = _imageDetector;
+    options.attributes = @{NSForegroundColorAttributeName:_textColor};
+    options.shouldInteractWithURLs = _shouldInteractWithURLs;
+    options.results = _links;
+    options.font = _font;
+    options.attributedLabel = self;
+    return [[self class] attributedStringWithString:_storage options:options];
 }
 
 - (void)didSelectExclusionViewsAtIndex:(NSUInteger)index {
@@ -960,6 +1036,17 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     
 }
 #endif
+
+#pragma mark - NSLayoutManagerDelegate
+- (void)layoutManagerDidInvalidateLayout:(NSLayoutManager *)sender {
+    [self invalidateIntrinsicContentSize];
+}
+- (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(nullable NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag {
+    [self invalidateIntrinsicContentSize];
+}
+- (void)layoutManager:(NSLayoutManager *)layoutManager textContainer:(NSTextContainer *)textContainer didChangeGeometryFromSize:(CGSize)oldSize {
+    [self invalidateIntrinsicContentSize];
+}
 @end
 
 @implementation AXMenuItem
@@ -975,4 +1062,7 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 + (instancetype)itemWithTitle:(NSString *)title handler:(AXMenuItemBlock)handler {
     return [[AXMenuItem alloc] initWithTitle:title handler:handler];
 }
+@end
+
+@implementation AXAttributedStringOptions
 @end

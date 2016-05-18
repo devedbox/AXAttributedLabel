@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		015043B81CEAF11300164ABD /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 015043B71CEAF11300164ABD /* ViewController2.m */; };
 		0189A1A61CDC465100D0F0D8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A1A51CDC465100D0F0D8 /* main.m */; };
 		0189A1A91CDC465100D0F0D8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A1A81CDC465100D0F0D8 /* AppDelegate.m */; };
 		0189A1AC1CDC465100D0F0D8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0189A1AB1CDC465100D0F0D8 /* ViewController.m */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		015043B61CEAF11300164ABD /* ViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController2.h; sourceTree = "<group>"; };
+		015043B71CEAF11300164ABD /* ViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController2.m; sourceTree = "<group>"; };
 		0189A1A11CDC465100D0F0D8 /* AXAttributedLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AXAttributedLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0189A1A51CDC465100D0F0D8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0189A1A71CDC465100D0F0D8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 				0189A1A81CDC465100D0F0D8 /* AppDelegate.m */,
 				0189A1AA1CDC465100D0F0D8 /* ViewController.h */,
 				0189A1AB1CDC465100D0F0D8 /* ViewController.m */,
+				015043B61CEAF11300164ABD /* ViewController2.h */,
+				015043B71CEAF11300164ABD /* ViewController2.m */,
 				0189A1DA1CDC662400D0F0D8 /* AXAttributedLabel */,
 				0189A1AD1CDC465100D0F0D8 /* Main.storyboard */,
 				0189A1B01CDC465100D0F0D8 /* Assets.xcassets */,
@@ -364,6 +369,7 @@
 			files = (
 				0189A1AC1CDC465100D0F0D8 /* ViewController.m in Sources */,
 				0189A1A91CDC465100D0F0D8 /* AppDelegate.m in Sources */,
+				015043B81CEAF11300164ABD /* ViewController2.m in Sources */,
 				0189A1A61CDC465100D0F0D8 /* main.m in Sources */,
 				0189A1D91CDC662000D0F0D8 /* AXAttributedLabel.m in Sources */,
 			);

@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "AXAttributedLabel"
-s.version      = "0.2.1"
+s.version      = "0.2.2"
 s.summary      = "`AXAttributedLabel` is an iOS customizable attributed label that displays attributed text."
 
 s.description  = <<-DESC
@@ -21,7 +21,7 @@ s.platform     = :ios, "7.0"
   # s.ios.deployment_target = “7.0”
   # s.osx.deployment_target = "10.7"
   # s.watchos.deployment_target = "2.0"
-s.source       = { :git => "https://github.com/devedbox/AXAttributedLabel.git", :tag => "0.2.1" }
+s.source       = { :git => "https://github.com/devedbox/AXAttributedLabel.git", :tag => "0.2.2" }
 s.source_files  = "AXAttributedLabel/AXAttributedLabel/*.{h,m}"
   #s.exclude_files = "Classes/Exclude"
   # s.public_header_files = "Classes/**/*.h"

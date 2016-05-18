@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="TQl-S5-7GC">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -17,27 +17,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="et3-Xo-neb" customClass="AXAttributedLabel">
-                                <rect key="frame" x="0.0" y="198.5" width="600" height="203"/>
-                                <color key="backgroundColor" red="0.85882353779999998" green="0.85882353779999998" blue="0.85882353779999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="attributedEnabled" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="shouldInteractWithAttachments" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="shouldInteractWithURLs" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="shouldInteractWithExclusionViews" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="allowsPreviewURLs" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </textView>
+                            <view contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="36" translatesAutoresizingMaskIntoConstraints="NO" id="KbM-H8-X5a">
+                                <rect key="frame" x="200" y="293" width="200" height="40"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="et3-Xo-neb" customClass="AXAttributedLabel">
+                                        <rect key="frame" x="6" y="-185" width="188" height="384"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="attributedEnabled" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="shouldInteractWithAttachments" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="shouldInteractWithURLs" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="shouldInteractWithExclusionViews" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="allowsPreviewURLs" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99215686270000003" green="0.70980392160000005" blue="0.039215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="et3-Xo-neb" secondAttribute="bottom" constant="8" id="7YV-Ry-liL"/>
+                                    <constraint firstAttribute="trailing" secondItem="et3-Xo-neb" secondAttribute="trailing" constant="6" id="NQE-XA-oaB"/>
+                                    <constraint firstItem="et3-Xo-neb" firstAttribute="leading" secondItem="KbM-H8-X5a" secondAttribute="leading" constant="6" id="QG1-Ug-kHo"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="j7c-Z6-Doe"/>
+                                    <constraint firstItem="et3-Xo-neb" firstAttribute="top" secondItem="KbM-H8-X5a" secondAttribute="top" constant="8" id="sNR-5m-xnc"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="et3-Xo-neb" secondAttribute="trailing" id="1bf-vT-PVR"/>
-                            <constraint firstItem="et3-Xo-neb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="HZK-8L-nMB"/>
-                            <constraint firstItem="et3-Xo-neb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="fEa-WB-Rgx"/>
+                            <constraint firstItem="KbM-H8-X5a" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="1Cb-kG-gqD"/>
+                            <constraint firstItem="KbM-H8-X5a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="43" id="KQJ-hy-492"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KbM-H8-X5a" secondAttribute="trailing" constant="41.5" id="al0-rC-PqK"/>
+                            <constraint firstItem="KbM-H8-X5a" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vro-cO-JmQ"/>
                         </constraints>
                     </view>
                     <connections>
@@ -46,7 +60,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="460" y="351"/>
+            <point key="canvasLocation" x="172" y="307"/>
+        </scene>
+        <!--View Controller2-->
+        <scene sceneID="Htp-xs-BC7">
+            <objects>
+                <viewController id="TQl-S5-7GC" customClass="ViewController2" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="buQ-en-4Rr"/>
+                        <viewControllerLayoutGuide type="bottom" id="HlS-am-YdL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0oA-e8-vWJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wX5-Hm-nSe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="243" y="331"/>
         </scene>
     </scenes>
 </document>
