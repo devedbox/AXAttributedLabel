@@ -788,7 +788,7 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     options.font = font;
     options.attributedLabel = nil;
     
-    [textStorage setAttributedString:[[self class] attributedStringWithString:text options:options]];
+    [textStorage setAttributedString:[[self class] attributedStringWithString:text?:@"" options:options]];
     
     if (exclusionPaths.count > 0) {
         textContainer.exclusionPaths = [exclusionPaths copy];
@@ -802,7 +802,7 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 #pragma mark - Private
 + (NSAttributedString *)attributedStringWithString:(NSString *)string options:(AXAttributedStringOptions *)options {
     if (string.length == 0) {
-        return nil;
+        return [NSAttributedString new];
     }
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[string copy]];
     [attributedString setAttributes:options.attributes range:NSMakeRange(0, string.length)];
