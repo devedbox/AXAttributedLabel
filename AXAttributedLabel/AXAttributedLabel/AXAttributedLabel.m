@@ -655,7 +655,7 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     }
     for (UIView *view in _exclusionViews) {
         CGRect frame = view.frame;
-        frame.origin.x += self.textContainerInset.left-5;
+        frame.origin.x += self.textContainerInset.left;
         frame.origin.y += self.textContainerInset.top;
         UIBezierPath *bezier = [UIBezierPath bezierPathWithRoundedRect:view.frame cornerRadius:view.layer.cornerRadius];
         [exclusionPaths addObject:bezier];
@@ -663,17 +663,17 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
         [_textContainerView addSubview:view];
         view.userInteractionEnabled = YES;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
-        if ([[[UIDevice currentDevice] systemVersion] intValue]>=9) {
-            UIViewController *viewController = nil;
-            id nextResponsder = self.nextResponder;
-            while (![nextResponsder isKindOfClass:[UIViewController class]]) {
-                nextResponsder = [nextResponsder nextResponder];
-            }
-            viewController = nextResponsder;
-            if (viewController) {
-                [viewController registerForPreviewingWithDelegate:self sourceView:view];
-            }
-        }
+//        if ([[[UIDevice currentDevice] systemVersion] intValue]>=9) {
+//            UIViewController *viewController = nil;
+//            id nextResponsder = self.nextResponder;
+//            while (![nextResponsder isKindOfClass:[UIViewController class]]) {
+//                nextResponsder = [nextResponsder nextResponder];
+//            }
+//            viewController = nextResponsder;
+//            if (viewController) {
+//                [viewController registerForPreviewingWithDelegate:self sourceView:view];
+//            }
+//        }
 #endif
     }
     [self setExclusionPaths:exclusionPaths];
