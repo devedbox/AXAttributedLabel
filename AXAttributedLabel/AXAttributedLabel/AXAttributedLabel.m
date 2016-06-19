@@ -780,7 +780,7 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     [textStorage addLayoutManager:layoutManager];
     
     AXAttributedStringOptions *options = [AXAttributedStringOptions new];
-    options.detectorTypes = [[self appearance] detectorTypes]|(AXAttributedLabelDetectorTypeDate|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypeImage|AXAttributedLabelDetectorTypeAddress|AXAttributedLabelDetectorTypePhoneNumber|AXAttributedLabelDetectorTypeTransitInformation);
+    options.detectorTypes = AXAttributedLabelDetectorTypeImage;
     options.imageDetectorPattern = [[self appearance] imageDetector]?:kAXImageDetector;
     options.attributes = @{NSForegroundColorAttributeName:[[self appearance] textColor]?:[UIColor blackColor]};
     options.shouldInteractWithURLs = YES;
