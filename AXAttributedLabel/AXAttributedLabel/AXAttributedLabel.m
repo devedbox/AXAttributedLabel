@@ -196,7 +196,7 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
         }
     }
     // Set up layout manager.
-    self.layoutManager.allowsNonContiguousLayout = NO;
+    self.layoutManager.allowsNonContiguousLayout = YES;
     self.layoutManager.delegate = self;
     // Set up text container.
     self.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -394,17 +394,9 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     [super touchesCancelled:touches withEvent:event];
 }
 
-- (void)didMoveToSuperview {
-    [super didMoveToSuperview];
-    if (self.translatesAutoresizingMaskIntoConstraints == NO) {
-        [self invalidateIntrinsicContentSize];
-    }
-}
-
 - (CGSize)sizeThatFits:(CGSize)size {
     CGSize susize = [super sizeThatFits:size];
     susize.width = self.frame.size.width;
-    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
     susize.height = ceil([self.layoutManager usedRectForTextContainer:self.textContainer].size.height)+self.textContainerInset.top+self.textContainerInset.bottom;
     return susize;
 }
@@ -423,33 +415,28 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 - (void)layoutSubviews {
     [super layoutSubviews];
     // Layout the text container view.
-    if (_textContainerView) {
-        CGRect rect_container = _textContainerView.frame;
-        [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
-        CGSize usedSize = [self.layoutManager usedRectForTextContainer:self.textContainer].size;
-        rect_container.size = CGSizeMake(ceil(usedSize.width)+self.textContainerInset.left+self.textContainerInset.right, ceil(usedSize.height+self.textContainerInset.top+self.textContainerInset.bottom));
-        rect_container.size.width = MAX(rect_container.size.width, CGRectGetWidth(self.frame));
-        if (CGRectGetHeight(rect_container)>=CGRectGetHeight(self.frame)) {
-            // Use AXAttributedLabelVerticalAlignmentTop.
-            rect_container.origin.y = .0;
-            rect_container.size.height = CGRectGetHeight(self.frame);
-        } else {
-            // Use the vertical alignment.
-            switch (_verticalAlignment) {
-                case AXAttributedLabelVerticalAlignmentTop:
-                    rect_container.origin.y = .0;
-                    break;
-                case AXAttributedLabelVerticalAlignmentBottom:
-                    rect_container.origin.y = CGRectGetHeight(self.frame) - CGRectGetHeight(rect_container);
-                    break;
-                case AXAttributedLabelVerticalAlignmentCenter:
-                default:
-                    rect_container.origin.y = CGRectGetHeight(self.frame)*.5-CGRectGetHeight(rect_container)*.5;
-                    break;
-            }
+    CGRect rect_container = _textContainerView.frame;
+    rect_container.size.width = MAX(rect_container.size.width, CGRectGetWidth(self.frame));
+    if (CGRectGetHeight(rect_container)>=CGRectGetHeight(self.frame)) {
+        // Use AXAttributedLabelVerticalAlignmentTop.
+        rect_container.origin.y = .0;
+        rect_container.size.height = CGRectGetHeight(self.frame);
+    } else {
+        // Use the vertical alignment.
+        switch (_verticalAlignment) {
+            case AXAttributedLabelVerticalAlignmentTop:
+                rect_container.origin.y = .0;
+                break;
+            case AXAttributedLabelVerticalAlignmentBottom:
+                rect_container.origin.y = CGRectGetHeight(self.frame) - CGRectGetHeight(rect_container);
+                break;
+            case AXAttributedLabelVerticalAlignmentCenter:
+            default:
+                rect_container.origin.y = CGRectGetHeight(self.frame)*.5-CGRectGetHeight(rect_container)*.5;
+                break;
         }
-        _textContainerView.frame = rect_container;
     }
+    _textContainerView.frame = rect_container;
 }
 #pragma mark - Getters
 - (NSString *)text {
@@ -557,8 +544,6 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     }
     [super setAttributedText:attributedText];
     _shouldUpdateBoundingSize = YES;
-    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
-    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setFont:(UIFont *)font {
@@ -590,7 +575,6 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
         return;
     }
     [super setTextContainerInset:textContainerInset];
-    [self invalidateIntrinsicContentSize];
     _shouldUpdateBoundingSize = YES;
 }
 
@@ -664,18 +648,15 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 
 - (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode {
     self.textContainer.lineBreakMode = lineBreakMode;
-    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
 }
 
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
     self.textContainer.maximumNumberOfLines = numberOfLines;
-    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
 }
 
 - (void)setExclusionPaths:(NSArray<UIBezierPath *> *)exclusionPaths {
     self.textContainer.exclusionPaths = exclusionPaths;
     _shouldUpdateBoundingSize = YES;
-    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
 }
 
 - (void)setExclusionViews:(NSArray<UIView *> *)exclusionViews {
@@ -1108,7 +1089,8 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     [self invalidateIntrinsicContentSize];
 }
 - (void)layoutManager:(NSLayoutManager *)layoutManager textContainer:(NSTextContainer *)textContainer didChangeGeometryFromSize:(CGSize)oldSize {
-    [self invalidateIntrinsicContentSize];
+    [self.textContainer setSize:self.bounds.size];
+    [self.layoutManager ensureLayoutForTextContainer:self.textContainer];
 }
 @end
 
