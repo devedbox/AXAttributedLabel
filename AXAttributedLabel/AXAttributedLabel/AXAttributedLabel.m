@@ -519,9 +519,11 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
 #pragma mark - Setters
 - (void)setText:(NSString *)text {
     // Store the copy version of text.
+    /*
     if ([_storage isEqualToString:text]) {
         return;
     }
+     */
     _storage = [text copy];
     if (_attributedEnabled) {
         // Set attributed label text string.
