@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>AXAttributedlabel by devedbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">AXAttributedlabel</h1>
+      <h2 class="project-tagline">AXAttributedLabel is an attributed text label using TextKit on iOS platform that displays text content like UILable do and detect the link/phone/address like UITextView do.</h2>
+      <a href="https://github.com/devedbox/AXAttributedLabel" class="btn">View on GitHub</a>
+      <a href="https://github.com/devedbox/AXAttributedLabel/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/devedbox/AXAttributedLabel/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="axattributedlabel" class="anchor" href="#axattributedlabel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AXAttributedLabel<a href="https://travis-ci.org/devedbox/AXAttributedLabel"><img src="https://travis-ci.org/devedbox/AXAttributedLabel.svg?branch=master" alt="Build Status"></a><a href="http://cocoapods.org/pods/AXAttributedLabel"><img src="https://img.shields.io/cocoapods/v/AXAttributedLabel.svg?style=flat" alt="Version"></a><a href="http://cocoapods.org/pods/AXAttributedLabel"><img src="https://img.shields.io/cocoapods/l/AXAttributedLabel.svg?style=flat" alt="License"></a><a href="http://cocoapods.org/pods/AXAttributedLabel"><img src="https://img.shields.io/cocoapods/p/AXAttributedLabel.svg?style=flat" alt="Platform"></a>
+</h1>
+
+<h2>
+<a id="summary" class="anchor" href="#summary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h2>
+
+<p><code>AXAttributedLabel</code> is a lightweight attributed text tool based on <strong>TextKit</strong> using <code>UITextView</code> as structures. With <code>AXAttributedLabel</code>, you can show text content with phone/address/date as attributed text on a interacting view. You can add custom link to the <em>label</em> and capture the actions of touch on the links. On iOS9.0 (IPhone 6s) and higher platforms, you can interact with links using <strong>Peek</strong> and <strong>Pop</strong> to preview the content of links.</p>
+
+<p><a href="http://ww1.sinaimg.cn/large/d2297bd2gw1f6hhddhg0mg20ac0iju0x.gif"><img src="http://ww1.sinaimg.cn/large/d2297bd2gw1f6hhddhg0mg20ac0iju0x.gif" alt="sample2"></a></p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<blockquote>
+<p>Data detection supported.</p>
+
+<p><strong>Peek</strong>&amp;<strong>Pop</strong> to preview the links.</p>
+
+<p>Insert any images into text content.</p>
+
+<p>Long press to show menu and customize the edit menu.</p>
+
+<p>Added customizable links.</p>
+</blockquote>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p><code>AXAttributedLabel</code> used on iOS 7.0 and higher version system of IPhone. It needs：</p>
+
+<blockquote>
+<ul>
+<li>Foundation.framework</li>
+<li>UIKit.framework</li>
+</ul>
+</blockquote>
+
+<p>You best use the <strong>newest</strong> version of xcode when you use the label to your projects.</p>
+
+<h2>
+<a id="adding-axattributedlabel-to-your-projet" class="anchor" href="#adding-axattributedlabel-to-your-projet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding AXAttributedLabel to your projet</h2>
+
+<h3>
+<a id="cocoapods" class="anchor" href="#cocoapods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CocoaPods</h3>
+
+<p><a href="http://cocoapods.org">CocoaPods</a> is the recommended way to add AXAttributedLabel to your project.</p>
+
+<ol>
+<li>Add a pod entry for AXAttributedLabel to your Podfile <code>pod 'AXAttributedLabel', '~&gt; 0.2.9'</code>
+</li>
+<li>Install the pod(s) by running <code>pod install</code>.</li>
+<li>Include AXPopoverView wherever you need it with <code>#import "AXAttributedLabel.h"</code>.</li>
+</ol>
+
+<h3>
+<a id="source-files" class="anchor" href="#source-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Source files</h3>
+
+<p>Alternatively you can directly add the <code>AXAttributedLabel.h</code> and <code>AXAttributedLabel.m</code>  source files to your project.</p>
+
+<ol>
+<li>Download the <a href="https://github.com/devedbox/AXAttributedLabel/archive/master.zip">latest code version</a> or add the repository as a git submodule to your git-tracked project. </li>
+<li>Open your project in Xcode, then drag and drop <code>AXAttributedLabel.h</code> and <code>AXAttributedLabel.m</code> onto your project (use the "Product Navigator view"). Make sure to select Copy items when asked if you extracted the code archive outside of your project. </li>
+<li>Include AXAttributedLabel wherever you need it with <code>#import "AXAttributedLabel.h"</code>.</li>
+</ol>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>This code is distributed under the terms and conditions of the <a href="LICENSE">MIT license</a>. </p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p><code>AXAttributedLabel</code> is simple to use just like <code>UILabel</code> or <code>UITextView</code>. Before you use it, make sure you initialize correctly like:</p>
+
+<div class="highlight highlight-source-objc"><pre>_label = [AXAttributedLabel <span class="pl-c1">attributedLabel</span>];
+_label.translatesAutoresizingMaskIntoConstraints = <span class="pl-c1">NO</span>;
+_label.attribute = self;
+_label.text = <span class="pl-s"><span class="pl-pds">@"</span>Multiple availability att[sss]ributes can be placed on a declaration, which may correspond to different platforms. Only the availability attr[sss]ibute with the platform[sss] correcorre 明天 sponding to the target pla[sss]tform will be used. https://www.baidu.com the availability 15680002585 any others wil[sss]l be ignored. If no 成都市成华区二仙桥东三路1号 availability attribute specifies availability for the cu[sss]rrent target platform, the a[sss]vailability attributes are ignored.<span class="pl-pds">"</span></span>;</pre></div>
+
+<p>And make sure <code>_label.attributedEnabled = NO;</code> is setted. <code>attributedEnabled</code> controls the detection of data. Default is <code>YES</code> to detect data and not to if it's <code>NO</code>.</p>
+
+<h3>
+<a id="set-data-detector" class="anchor" href="#set-data-detector" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set data detector</h3>
+
+<p>Like this:</p>
+
+<div class="highlight highlight-source-objc"><pre>_label.detectorTypes |= AXAttributedLabelDetectorTypeImage|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypeTransitInformation|AXAttributedLabelDetectorTypeAddress;</pre></div>
+
+<h3>
+<a id="interact-with-links" class="anchor" href="#interact-with-links" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Interact with links</h3>
+
+<p>If you want to interact with links. Add these codes after your initializer of <code>AXAttributedLabel</code>: </p>
+
+<div class="highlight highlight-source-objc"><pre>_label.shouldInteractWithURLs = <span class="pl-c1">YES</span>;
+_label.shouldInteractWithExclusionViews = <span class="pl-c1">YES</span>;</pre></div>
+
+<h3>
+<a id="preview-links-using-3d-touch" class="anchor" href="#preview-links-using-3d-touch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Preview links using <strong>3D Touch</strong>
+</h3>
+
+<p>Make sure you set interact enabled and add these codes:</p>
+
+<div class="highlight highlight-source-objc"><pre>_label.allowsPreviewURLs = <span class="pl-c1">YES</span>;</pre></div>
+
+<p>This will work.</p>
+
+<h3>
+<a id="add-images-to-content" class="anchor" href="#add-images-to-content" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add images to content</h3>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-objc"><pre>UIImageView *imageView = [[UIImageView <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithFrame:</span><span class="pl-c1">CGRectMake</span>(<span class="pl-c1">CGRectGetWidth</span>(<span class="pl-v">self</span>.view.frame)*.<span class="pl-c1">5</span>-<span class="pl-c1">45</span>, <span class="pl-c1">45</span>, <span class="pl-c1">90</span>, <span class="pl-c1">90</span>)];
+imageView.image = [UIImage <span class="pl-c1">imageNamed:</span><span class="pl-s"><span class="pl-pds">@"</span>avatar.jpg<span class="pl-pds">"</span></span>];
+_label.exclusionViews = @[imageView];</pre></div>
+
+<h3>
+<a id="add-custom-edit-menu-options" class="anchor" href="#add-custom-edit-menu-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add custom edit menu options</h3>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-objc"><pre>_label.showsMenuItems = <span class="pl-c1">YES</span>;
+AXMenuItem *item = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>aaa<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>aaa<span class="pl-pds">"</span></span>);
+    }];
+AXMenuItem *item1 = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>bbb<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>bbb<span class="pl-pds">"</span></span>);
+    }];
+AXMenuItem *item2 = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>ccc<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>ccc<span class="pl-pds">"</span></span>);
+    }];
+AXMenuItem *item3 = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>ddd<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>ddd<span class="pl-pds">"</span></span>);
+    }];
+AXMenuItem *item4 = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>eee<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>eee<span class="pl-pds">"</span></span>);
+    }];
+AXMenuItem *item5 = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>fff<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>fff<span class="pl-pds">"</span></span>);
+    }];
+AXMenuItem *item6 = [AXMenuItem <span class="pl-c1">itemWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>hhh<span class="pl-pds">"</span></span> <span class="pl-c1">handler:</span>^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>hhh<span class="pl-pds">"</span></span>);
+    }];
+[_label <span class="pl-c1">setMenuItems:</span>@[item, item1, item2, item3, item4, item5, item6]];</pre></div>
+
+<p>Just make sure <code>showsMenuItems</code> set to <code>YES</code> first.</p>
+
+<h3>
+<a id="using-delegate" class="anchor" href="#using-delegate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using delegate</h3>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-objc"><pre>#<span class="pl-k">pragma mark</span> - AXAttributedLabelDelegate
+- (UIImage *)imageAttachmentForAttributedLabel:(AXAttributedLabel *)attl result:(<span class="pl-c1">NSTextCheckingResult</span> *)result {
+    <span class="pl-k">return</span> [UIImage <span class="pl-c1">imageNamed:</span><span class="pl-s"><span class="pl-pds">@"</span>avatar.jpg<span class="pl-pds">"</span></span>];
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectURL:(<span class="pl-c1">NSURL</span> *)url {
+    [AXPickerView <span class="pl-c1">showInView:</span><span class="pl-v">self</span>.view.window <span class="pl-c1">animated:</span><span class="pl-c1">YES</span> <span class="pl-c1">style:</span><span class="pl-c1">0</span> <span class="pl-c1">items:</span>@[url.absoluteString] <span class="pl-c1">title:</span><span class="pl-s"><span class="pl-pds">@"</span>打开链接？<span class="pl-pds">"</span></span> <span class="pl-c1">tips:</span>[<span class="pl-c1">NSString</span> <span class="pl-c1">stringWithFormat:</span><span class="pl-s"><span class="pl-pds">@"</span>点击打开链接:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, url.absoluteString] <span class="pl-c1">configuration:</span><span class="pl-c1">NULL</span> <span class="pl-c1">completion:</span>^(AXPickerView *pickerView) {
+        pickerView.<span class="pl-smi">tipsLabel</span>.<span class="pl-smi">textAlignment</span> = NSTextAlignmentCenter;
+    } <span class="pl-c1">revoking:</span><span class="pl-c1">NULL</span> <span class="pl-c1">executing:</span>^(<span class="pl-c1">NSString</span> *selectedTitle, <span class="pl-k">NSInteger</span> <span class="pl-c1">index</span>, AXPickerView *inPickerView) {
+        <span class="pl-k">if</span> ([[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">canOpenURL:</span>url]) {
+            [[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">openURL:</span>url];
+        }
+    }];
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectAddress:(<span class="pl-c1">NSDictionary</span> *)addressComponents {
+    [AXPickerView <span class="pl-c1">showInView:</span><span class="pl-v">self</span>.view.window <span class="pl-c1">animated:</span><span class="pl-c1">YES</span> <span class="pl-c1">style:</span><span class="pl-c1">0</span> <span class="pl-c1">items:</span>[addressComponents <span class="pl-c1">allValues</span>] <span class="pl-c1">title:</span><span class="pl-s"><span class="pl-pds">@"</span>地址<span class="pl-pds">"</span></span> <span class="pl-c1">tips:</span><span class="pl-s"><span class="pl-pds">@"</span>显示所有地址<span class="pl-pds">"</span></span> <span class="pl-c1">configuration:</span><span class="pl-c1">NULL</span> <span class="pl-c1">completion:</span>^(AXPickerView *pickerView) {
+        pickerView.<span class="pl-smi">tipsLabel</span>.<span class="pl-smi">textAlignment</span> = NSTextAlignmentCenter;
+    } <span class="pl-c1">revoking:</span><span class="pl-c1">NULL</span> <span class="pl-c1">executing:</span><span class="pl-c1">NULL</span>];
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectPhoneNumber:(<span class="pl-c1">NSString</span> *)phoneNumber {
+    [AXPickerView <span class="pl-c1">showInView:</span><span class="pl-v">self</span>.view.window <span class="pl-c1">animated:</span><span class="pl-c1">YES</span> <span class="pl-c1">style:</span><span class="pl-c1">0</span> <span class="pl-c1">items:</span>@[phoneNumber] <span class="pl-c1">title:</span><span class="pl-s"><span class="pl-pds">@"</span>拨打电话？<span class="pl-pds">"</span></span> <span class="pl-c1">tips:</span>[<span class="pl-c1">NSString</span> <span class="pl-c1">stringWithFormat:</span><span class="pl-s"><span class="pl-pds">@"</span>点击拨打电话:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, phoneNumber] <span class="pl-c1">configuration:</span><span class="pl-c1">NULL</span> <span class="pl-c1">completion:</span>^(AXPickerView *pickerView) {
+        pickerView.<span class="pl-smi">tipsLabel</span>.<span class="pl-smi">textAlignment</span> = NSTextAlignmentCenter;
+    } <span class="pl-c1">revoking:</span><span class="pl-c1">NULL</span> <span class="pl-c1">executing:</span>^(<span class="pl-c1">NSString</span> *selectedTitle, <span class="pl-k">NSInteger</span> <span class="pl-c1">index</span>, AXPickerView *inPickerView) {
+        <span class="pl-k">if</span> ([[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">canOpenURL:</span>[<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span>[<span class="pl-c1">NSString</span> <span class="pl-c1">stringWithFormat:</span><span class="pl-s"><span class="pl-pds">@"</span>tel:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, phoneNumber]]]) {
+            [[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">openURL:</span>[<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span>[<span class="pl-c1">NSString</span> <span class="pl-c1">stringWithFormat:</span><span class="pl-s"><span class="pl-pds">@"</span>tel:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, phoneNumber]]];
+        }
+    }];
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectDate:(<span class="pl-c1">NSDate</span> *)date {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>date:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,date);
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectDate:(<span class="pl-c1">NSDate</span> *)date timeZone:(<span class="pl-c1">NSTimeZone</span> *)timeZone duration:(<span class="pl-c1">NSTimeInterval</span>)duration {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>date:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,date);
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectTransitInformation:(<span class="pl-c1">NSDictionary</span> *)components {
+
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectAttachment:(<span class="pl-c1">NSTextAttachment</span> *)attachment {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>attachment:<span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,attachment);
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectTextCheckingResult:(<span class="pl-c1">NSTextCheckingResult</span> *)result {
+
+}
+- (<span class="pl-k">void</span>)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectExclusionViewAtIndex:(<span class="pl-k">NSUInteger</span>)index {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>selected exclusion view at index: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, @(<span class="pl-c1">index</span>));
+}</pre></div>
+
+<h2>
+<a id="contact-me" class="anchor" href="#contact-me" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact me</h2>
+
+<p>If you find any bugs or require new features, please let me know:</p>
+
+<p><code>Wechat&amp;Phone：15680002585</code></p>
+
+<p><code>Weibo: @devedbox</code></p>
+
+<p><code>GitHub: https://github.com/devedbox</code></p>
+
+<p><code>LinkedIn：艾星</code></p>
+
+<p><code>Email：devedbox@gmail.com</code></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/devedbox/AXAttributedLabel">AXAttributedlabel</a> is maintained by <a href="https://github.com/devedbox">devedbox</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
