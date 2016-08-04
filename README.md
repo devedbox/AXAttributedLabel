@@ -1,55 +1,45 @@
-# AXAttributedLabel
-富文本Label控件
-> 支持数据检测：电话号码、链接、日期、地址
-
-> 链接支持Peek、Pop预览
-
-> 可插入自定义视图，文字环绕
-
-> 可以自定义编辑菜单
-
-> 可以自定义添加链接
-
-
 # AXAttributedLabel[![Build Status](https://travis-ci.org/devedbox/AXAttributedLabel.svg?branch=master)](https://travis-ci.org/devedbox/AXAttributedLabel)[![Version](https://img.shields.io/cocoapods/v/AXAttributedLabel.svg?style=flat)](http://cocoapods.org/pods/AXAttributedLabel)[![License](https://img.shields.io/cocoapods/l/AXAttributedLabel.svg?style=flat)](http://cocoapods.org/pods/AXAttributedLabel)[![Platform](https://img.shields.io/cocoapods/p/AXAttributedLabel.svg?style=flat)](http://cocoapods.org/pods/AXAttributedLabel)
+
 ##Summary
-`AXAttributedLabel` is a lightweight attributed text tool based on __TextKit__ using `UITextView` as structures. With `AXAttributedLabel`, you can show text content with phone/address/date as attributed text on a interacting view. You can add custom link to the _label_ and capture the actions of touch on the links. On iOS9.0 ( 6s) and higher platforms, you can interact with links using __Peek__ and __Pop__ to preview the content of links.
+`AXAttributedLabel` is a lightweight attributed text tool based on __TextKit__ using `UITextView` as structures. With `AXAttributedLabel`, you can show text content with phone/address/date as attributed text on a interacting view. You can add custom link to the _label_ and capture the actions of touch on the links. On iOS9.0 (IPhone 6s) and higher platforms, you can interact with links using __Peek__ and __Pop__ to preview the content of links.
 
 [![sample2](http://ww1.sinaimg.cn/large/d2297bd2gw1f6hhddhg0mg20ac0iju0x.gif)](http://ww1.sinaimg.cn/large/d2297bd2gw1f6hhddhg0mg20ac0iju0x.gif)
 
-[视频链接](http://video.weibo.com/show?fid=1034:5a4102ad40573447a44ae74d56a80451)
 ## Features
 > Data detection supported.
 > 
->* 网页加载失败提示（iOS8.0以下）
->* 网页加载进度提示
->* 网页来源提示
->* 支持__Peek__和__Pop__浏览网页，并且commit之后在本网页进行加载，不用跳转到Safari进行浏览，这里使用到了很多运行时的方法，因此，在使用的过程中可能会抛异常。
+> __Peek__&__Pop__ to preview the links.
+> 
+> Insert any images into text content.
+> 
+> Long press to show menu and customize the edit menu.
+> 
+> Added customizable links.
 
 ## Requirements
 
-`AXWebViewController` 对系统版本支持到iOS7.0，需要使用到：
+`AXAttributedLabel` used on iOS 7.0 and higher version system of IPhone. It needs：
 
 >* Foundation.framework
 >* UIKit.framework
 
-使用的时候最好使用最新版Xcode。
+You best use the __newest__ version of xcode when you use the label to your projects.
 
-## Adding AXWebViewController to your projet
+## Adding AXAttributedLabel to your projet
 ### CocoaPods
-[CocoaPods](http://cocoapods.org) is the recommended way to add AXWebViewController to your project.
+[CocoaPods](http://cocoapods.org) is the recommended way to add AXAttributedLabel to your project.
 
-1. Add a pod entry for AXPopoverView to your Podfile `pod 'AXWebViewController', '~> 0.1.10'`
+1. Add a pod entry for AXAttributedLabel to your Podfile `pod 'AXAttributedLabel', '~> 0.2.9'`
 2. Install the pod(s) by running `pod install`.
-3. Include AXPopoverView wherever you need it with `#import "AXWebViewController.h"`.
+3. Include AXPopoverView wherever you need it with `#import "AXAttributedLabel.h"`.
 
 ### Source files
 
-Alternatively you can directly add the `AXWebViewController.h`、`AXWebNavigationViewController.h` and `AXWebViewController.m`、`AXWebNavigationViewController.m` source files to your project.
+Alternatively you can directly add the `AXAttributedLabel.h` and `AXAttributedLabel.m`  source files to your project.
 
-1. Download the [latest code version](https://github.com/devedbox/AXWebViewController/archive/master.zip) or add the repository as a git submodule to your git-tracked project. 
-2. Open your project in Xcode, then drag and drop `AXWebViewController.h` and `AXWebViewControllerm` onto your project (use the "Product Navigator view"). Make sure to select Copy items when asked if you extracted the code archive outside of your project. 
-3. Include AXPopoverView wherever you need it with `#import "AXWebViewController.h"`.
+1. Download the [latest code version](https://github.com/devedbox/AXAttributedLabel/archive/master.zip) or add the repository as a git submodule to your git-tracked project. 
+2. Open your project in Xcode, then drag and drop `AXAttributedLabel.h` and `AXAttributedLabel.m` onto your project (use the "Product Navigator view"). Make sure to select Copy items when asked if you extracted the code archive outside of your project. 
+3. Include AXAttributedLabel wherever you need it with `#import "AXAttributedLabel.h"`.
 
 ## License
 
@@ -57,118 +47,126 @@ This code is distributed under the terms and conditions of the [MIT license](LIC
 
 ## Usage
 
-`AXWebViewController`使用和使用普通`UIViewController`一样简单，只需要在需要使用的地方使用`URL`初始化即可：
-```objcetive-c
-AXWebViewController *webVC = [[AXWebViewController alloc] initWithAddress:@"http://www.baidu.com"];
-webVC.showsToolBar = NO;
-webVC.navigationController.navigationBar.translucent = NO;
-self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.100f green:0.100f blue:0.100f alpha:0.800f];
-self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.996f green:0.867f blue:0.522f alpha:1.00f];
-[self.navigationController pushViewController:webVC animated:YES];
+`AXAttributedLabel` is simple to use just like `UILabel` or `UITextView`. Before you use it, make sure you initialize correctly like:
+```objective-c
+    _label = [AXAttributedLabel attributedLabel];
+    _label.translatesAutoresizingMaskIntoConstraints = NO;
+    _label.attribute = self;
+    _label.text = @"Multiple availability att[sss]ributes can be placed on a declaration, which may correspond to different platforms. Only the availability attr[sss]ibute with the platform[sss] correcorre 明天 sponding to the target pla[sss]tform will be used. https://www.baidu.com the availability 15680002585 any others wil[sss]l be ignored. If no 成都市成华区二仙桥东三路1号 availability attribute specifies availability for the cu[sss]rrent target platform, the a[sss]vailability attributes are ignored.";
 ```
-### 使用工具条导航
-使用工具条只需在`AXWebViewController`初始化之后加入一句代码：
-```objcetive-c
-webVC.navigationType = AXWebViewControllerNavigationToolItem;
-webVC.showsToolBar = YES;
+And make sure `_label.attributedEnabled = NO;` is setted. `attributedEnabled` controls the detection of data. Default is `YES` to detect data and not to if it's `NO`.
+### Set data detector
+Like this:
+```objective-c
+_label.detectorTypes |= AXAttributedLabelDetectorTypeImage|AXAttributedLabelDetectorTypeLink|AXAttributedLabelDetectorTypeTransitInformation|AXAttributedLabelDetectorTypeAddress;
 ```
-注意，在设置`navigationType`为`AXWebViewControllerNavigationToolItem`之后，须确认`showsToolBar`为`YES`才能生效.
-### 使用微信样式导航
-在`AXWebViewController`初始化之后加入一句代码：
-```objcetive-c
-webVC.navigationType = AXWebViewControllerNavigationBarItem;
+### Interact with links
+If you want to interact with links. Add these codes after your initializer of `AXAttributedLabel`: 
+```objective-c
+    _label.shouldInteractWithURLs = YES;
+    _label.shouldInteractWithExclusionViews = YES;
 ```
-即可生效.
-### Peek&Pop
-Peek和Pop使用的是原生的系统功能，在使用的时候只需要将`webView.allowsLinkPreview`设置为`YES`即可使用，这里需要注意下，在实现Peek和Pop的时候，使用了Runtime的相关知识，而且使用AOP的一个框架__[Aspects](https://github.com/steipete/Aspects)__进行了编程，在使用的过程中可能会出错，当然，出错的几率也是很小的（苹果不可能隔三差五的去修改自家的Private API吧=  =），实现原理就不多讲了，基本上就是运行时的一些知识，代码如下：
-```objcetive-c
+### Preview links using __3D Touch__
+Make sure you set interact enabled and add these codes:
+```objective-c
+     _label.allowsPreviewURLs = YES;
+```
+This will work.
+### Add images to content
+Example:
+```objective-c
+     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*.5-45, 45, 90, 90)];
+    imageView.image = [UIImage imageNamed:@"avatar.jpg"];
+    _label.exclusionViews = @[imageView];
+```
+### Add custom edit menu options
+Example:
+```objective-c
+    _label.showsMenuItems = YES;
+    AXMenuItem *item = [AXMenuItem itemWithTitle:@"aaa" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"aaa");
+    }];
+    AXMenuItem *item1 = [AXMenuItem itemWithTitle:@"bbb" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"bbb");
+    }];
+    AXMenuItem *item2 = [AXMenuItem itemWithTitle:@"ccc" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"ccc");
+    }];
+    AXMenuItem *item3 = [AXMenuItem itemWithTitle:@"ddd" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"ddd");
+    }];
+    AXMenuItem *item4 = [AXMenuItem itemWithTitle:@"eee" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"eee");
+    }];
+    AXMenuItem *item5 = [AXMenuItem itemWithTitle:@"fff" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"fff");
+    }];
+    AXMenuItem *item6 = [AXMenuItem itemWithTitle:@"hhh" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+        NSLog(@"hhh");
+    }];
+    [_label setMenuItems:@[item, item1, item2, item3, item4, item5, item6]];
+```
+Just make sure `showsMenuItems` set to `YES` first.
+### Using delegate
+Example:
 
-- (void)hookWebContentCommitPreviewHandler {
-    // Find the `WKContentView` in the webview.
-    __weak typeof(self) wself = self;
-    for (UIView *_view in _webView.scrollView.subviews) {
-    if ([_view isKindOfClass:NSClassFromString(@"WKContentView")]) {
-    id _previewItemController = object_getIvar(_view, class_getInstanceVariable([_view class], "_previewItemController"));
-    Class _class = [_previewItemController class];
-    SEL _performCustomCommitSelector = NSSelectorFromString(@"previewInteractionController:interactionProgress:forRevealAtLocation:inSourceView:containerView:");
-    [_previewItemController aspect_hookSelector:_performCustomCommitSelector withOptions:AspectPositionAfter usingBlock:^() {
-        UIViewController *pred = [_previewItemController valueForKeyPath:@"presentedViewController"];
-        [pred aspect_hookSelector:NSSelectorFromString(@"_addRemoteView") withOptions:AspectPositionAfter usingBlock:^() {
-            UIViewController *_remoteViewController = object_getIvar(pred, class_getInstanceVariable([pred class], "_remoteViewController"));
-            
-            [_remoteViewController aspect_hookSelector:@selector(viewDidLoad) withOptions:AspectPositionAfter usingBlock:^() {
-                _remoteViewController.view.tintColor = wself.navigationController.navigationBar.tintColor;
-            } error:NULL];
-        } error:NULL];
-        
-        NSArray *ddActions = [pred valueForKeyPath:@"ddActions"];
-        id openURLAction = [ddActions firstObject];
-        
-        [openURLAction aspect_hookSelector:NSSelectorFromString(@"perform") withOptions:AspectPositionInstead usingBlock:^ () {
-            NSURL *_url = object_getIvar(openURLAction, class_getInstanceVariable([openURLAction class], "_url"));
-            [wself loadURL:_url];
-        } error:NULL];
-        
-        id _lookupItem = object_getIvar(_previewItemController, class_getInstanceVariable([_class class], "_lookupItem"));
-        [_lookupItem aspect_hookSelector:NSSelectorFromString(@"commit") withOptions:AspectPositionInstead usingBlock:^() {
-            NSURL *_url = object_getIvar(_lookupItem, class_getInstanceVariable([_lookupItem class], "_url"));
-            [wself loadURL:_url];
-        } error:NULL];
-        [_lookupItem aspect_hookSelector:NSSelectorFromString(@"commitWithTransitionForPreviewViewController:inViewController:completion:") withOptions:AspectPositionInstead usingBlock:^() {
-            NSURL *_url = object_getIvar(_lookupItem, class_getInstanceVariable([_lookupItem class], "_url"));
-            [wself loadURL:_url];
-        } error:NULL];
-        /*
-         UIWindow
-         -UITransitionView
-         --UIVisualEffectView
-         ---_UIVisualEffectContentView
-         ----UIView
-         -----_UIPreviewActionSheetView
-         */
-        /*
-         for (UIView * transitionView in [UIApplication sharedApplication].keyWindow.subviews) {
-         if ([transitionView isMemberOfClass:NSClassFromString(@"UITransitionView")]) {
-         transitionView.tintColor = wself.navigationController.navigationBar.tintColor;
-         for (UIView *__view in transitionView.subviews) {
-         if ([__view isMemberOfClass:NSClassFromString(@"UIVisualEffectView")]) {
-         for (UIView *___view in __view.subviews) {
-         if ([___view isMemberOfClass:NSClassFromString(@"_UIVisualEffectContentView")]) {
-         for (UIView *____view in ___view.subviews) {
-         if ([____view isMemberOfClass:NSClassFromString(@"UIView")]) {
-         __weak typeof(____view) w____view = ____view;
-         [____view aspect_hookSelector:@selector(addSubview:) withOptions:AspectPositionAfter usingBlock:^() {
-         for (UIView *actionSheet in w____view.subviews) {
-         if ([actionSheet isMemberOfClass:NSClassFromString(@"_UIPreviewActionSheetView")]) {
-         break;
-         }
-         }
-         } error:NULL];
-         }
-         }break;
-         }
-         }break;
-         }
-         }break;
-         }
-         }
-         */
-    } error:NULL];
-    break;
-    }
-    }
+```objective-c
+#pragma mark - AXAttributedLabelDelegate
+- (UIImage *)imageAttachmentForAttributedLabel:(AXAttributedLabel *)attl result:(NSTextCheckingResult *)result {
+    return [UIImage imageNamed:@"avatar.jpg"];
 }
-
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectURL:(NSURL *)url {
+    [AXPickerView showInView:self.view.window animated:YES style:0 items:@[url.absoluteString] title:@"打开链接？" tips:[NSString stringWithFormat:@"点击打开链接:%@", url.absoluteString] configuration:NULL completion:^(AXPickerView *pickerView) {
+        pickerView.tipsLabel.textAlignment = NSTextAlignmentCenter;
+    } revoking:NULL executing:^(NSString *selectedTitle, NSInteger index, AXPickerView *inPickerView) {
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }];
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectAddress:(NSDictionary *)addressComponents {
+    [AXPickerView showInView:self.view.window animated:YES style:0 items:[addressComponents allValues] title:@"地址" tips:@"显示所有地址" configuration:NULL completion:^(AXPickerView *pickerView) {
+        pickerView.tipsLabel.textAlignment = NSTextAlignmentCenter;
+    } revoking:NULL executing:NULL];
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectPhoneNumber:(NSString *)phoneNumber {
+    [AXPickerView showInView:self.view.window animated:YES style:0 items:@[phoneNumber] title:@"拨打电话？" tips:[NSString stringWithFormat:@"点击拨打电话:%@", phoneNumber] configuration:NULL completion:^(AXPickerView *pickerView) {
+        pickerView.tipsLabel.textAlignment = NSTextAlignmentCenter;
+    } revoking:NULL executing:^(NSString *selectedTitle, NSInteger index, AXPickerView *inPickerView) {
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber]]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber]]];
+        }
+    }];
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectDate:(NSDate *)date {
+    NSLog(@"date:%@",date);
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone duration:(NSTimeInterval)duration {
+    NSLog(@"date:%@",date);
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectTransitInformation:(NSDictionary *)components {
+    
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectAttachment:(NSTextAttachment *)attachment {
+    NSLog(@"attachment:%@",attachment);
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectTextCheckingResult:(NSTextCheckingResult *)result {
+    
+}
+- (void)attributedLabel:(AXAttributedLabel *)attributedLabel didSelectExclusionViewAtIndex:(NSUInteger)index {
+    NSLog(@"selected exclusion view at index: %@", @(index));
+}
 ```
 
-## 致谢
-[RxWebViewController](https://github.com/Roxasora/RxWebViewController)为我提供了思路，有些地方做了参考
+## Contact me
+If you find any bugs or require new features, please let me know:
 
-使用了[NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress)作为进度条，感谢！
-## 更新日志
-### 0.1.10 
-使用基于`UIWebView`的实现，进度条使用`NJKWebViewProgress`实现.
-### 0.2.0
-iOS8.0以上使用`WKWebView`实现，进度条使用`UIProgressView`实现. 实现了本页面Peek&Pop而不用跳转到Safari进行浏览.
-### 0.3.0
-使用[AXNavigationBackItemInjection](https://github.com/devedbox/AXNavigationBackItemInjection)实现微信导航样式，也可以自定义返回的操作，只需要几行代码就可以搞定！
+`Wechat&Phone：15680002585`
+
+`Weibo: @devedbox`
+
+`GitHub: https://github.com/devedbox`
+
+`LinkedIn：艾星`
+
+`Email：devedbox@gmail.com`
