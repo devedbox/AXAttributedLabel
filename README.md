@@ -49,10 +49,10 @@ This code is distributed under the terms and conditions of the [MIT license](LIC
 
 `AXAttributedLabel` is simple to use just like `UILabel` or `UITextView`. Before you use it, make sure you initialize correctly like:
 ```objective-c
-    _label = [AXAttributedLabel attributedLabel];
-    _label.translatesAutoresizingMaskIntoConstraints = NO;
-    _label.attribute = self;
-    _label.text = @"Multiple availability att[sss]ributes can be placed on a declaration, which may correspond to different platforms. Only the availability attr[sss]ibute with the platform[sss] correcorre 明天 sponding to the target pla[sss]tform will be used. https://www.baidu.com the availability 15680002585 any others wil[sss]l be ignored. If no 成都市成华区二仙桥东三路1号 availability attribute specifies availability for the cu[sss]rrent target platform, the a[sss]vailability attributes are ignored.";
+_label = [AXAttributedLabel attributedLabel];
+_label.translatesAutoresizingMaskIntoConstraints = NO;
+_label.attribute = self;
+_label.text = @"Multiple availability att[sss]ributes can be placed on a declaration, which may correspond to different platforms. Only the availability attr[sss]ibute with the platform[sss] correcorre 明天 sponding to the target pla[sss]tform will be used. https://www.baidu.com the availability 15680002585 any others wil[sss]l be ignored. If no 成都市成华区二仙桥东三路1号 availability attribute specifies availability for the cu[sss]rrent target platform, the a[sss]vailability attributes are ignored.";
 ```
 And make sure `_label.attributedEnabled = NO;` is setted. `attributedEnabled` controls the detection of data. Default is `YES` to detect data and not to if it's `NO`.
 ### Set data detector
@@ -63,48 +63,48 @@ _label.detectorTypes |= AXAttributedLabelDetectorTypeImage|AXAttributedLabelDete
 ### Interact with links
 If you want to interact with links. Add these codes after your initializer of `AXAttributedLabel`: 
 ```objective-c
-    _label.shouldInteractWithURLs = YES;
-    _label.shouldInteractWithExclusionViews = YES;
+_label.shouldInteractWithURLs = YES;
+_label.shouldInteractWithExclusionViews = YES;
 ```
 ### Preview links using __3D Touch__
 Make sure you set interact enabled and add these codes:
 ```objective-c
-     _label.allowsPreviewURLs = YES;
+_label.allowsPreviewURLs = YES;
 ```
 This will work.
 ### Add images to content
 Example:
 ```objective-c
-     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*.5-45, 45, 90, 90)];
-    imageView.image = [UIImage imageNamed:@"avatar.jpg"];
-    _label.exclusionViews = @[imageView];
+UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*.5-45, 45, 90, 90)];
+imageView.image = [UIImage imageNamed:@"avatar.jpg"];
+_label.exclusionViews = @[imageView];
 ```
 ### Add custom edit menu options
 Example:
 ```objective-c
-    _label.showsMenuItems = YES;
-    AXMenuItem *item = [AXMenuItem itemWithTitle:@"aaa" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+_label.showsMenuItems = YES;
+AXMenuItem *item = [AXMenuItem itemWithTitle:@"aaa" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"aaa");
     }];
-    AXMenuItem *item1 = [AXMenuItem itemWithTitle:@"bbb" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+AXMenuItem *item1 = [AXMenuItem itemWithTitle:@"bbb" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"bbb");
     }];
-    AXMenuItem *item2 = [AXMenuItem itemWithTitle:@"ccc" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+AXMenuItem *item2 = [AXMenuItem itemWithTitle:@"ccc" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"ccc");
     }];
-    AXMenuItem *item3 = [AXMenuItem itemWithTitle:@"ddd" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+AXMenuItem *item3 = [AXMenuItem itemWithTitle:@"ddd" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"ddd");
     }];
-    AXMenuItem *item4 = [AXMenuItem itemWithTitle:@"eee" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+AXMenuItem *item4 = [AXMenuItem itemWithTitle:@"eee" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"eee");
     }];
-    AXMenuItem *item5 = [AXMenuItem itemWithTitle:@"fff" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+AXMenuItem *item5 = [AXMenuItem itemWithTitle:@"fff" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"fff");
     }];
-    AXMenuItem *item6 = [AXMenuItem itemWithTitle:@"hhh" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
+AXMenuItem *item6 = [AXMenuItem itemWithTitle:@"hhh" handler:^(AXAttributedLabel * _Nonnull label, AXMenuItem * _Nonnull item) {
         NSLog(@"hhh");
     }];
-    [_label setMenuItems:@[item, item1, item2, item3, item4, item5, item6]];
+[_label setMenuItems:@[item, item1, item2, item3, item4, item5, item6]];
 ```
 Just make sure `showsMenuItems` set to `YES` first.
 ### Using delegate
