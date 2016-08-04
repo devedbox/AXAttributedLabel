@@ -3,4 +3,3 @@ language: objective-c
 xcode_workspace: AXAttributedLabel.xcworkspace
 xcode_scheme: AXAttributedLabel
 #xcode_sdk: iphonesimulator
-bundler_args: --retry
