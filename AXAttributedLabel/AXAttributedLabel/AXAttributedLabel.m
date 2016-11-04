@@ -819,6 +819,10 @@ NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification = 
     NSMutableAttributedString *__block attributedString = [[NSMutableAttributedString alloc] initWithString:[string copy]];
     [attributedString setAttributes:options.attributes range:NSMakeRange(0, string.length)];
     [attributedString addAttribute:NSFontAttributeName value:options.font range:NSMakeRange(0, string.length)];
+    // Custom handle the attributed string.
+    if (_attributedStringHandler) {
+        _attributedStringHandler(self, attributedString);
+    }
     
     NSError *__block error;
     dispatch_queue_t detectorQueue = dispatch_queue_create("com.axattributedlabel.detector", NULL);

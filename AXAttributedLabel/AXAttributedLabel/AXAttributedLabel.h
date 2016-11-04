@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^AXAttributedLabelLinkBlock)(AXAttributedLabel *_Nonnull, NSTextCheckingResult *_Nonnull result);
 typedef void(^AXAttributedLabelExclusionViewsBlock)(AXAttributedLabel *_Nonnull, NSUInteger index);
+typedef void(^AXAttributedLabelAttributedStringBlock)(AXAttributedLabel *_Nonnull, NSMutableAttributedString *attr);
 
 extern NSString *const kAXAttributedLabelRequestCanBecomeFirstResponsderNotification;
 extern NSString *const kAXAttributedLabelRequestCanResignFirstResponsderNotification;
@@ -76,6 +77,8 @@ NS_CLASS_AVAILABLE(10_0, 7_0) @interface AXAttributedLabel : UITextView
 @property(copy, NS_NONATOMIC_IOSONLY) NSArray<UIView *> *exclusionViews;
 @property(assign, nonatomic) IBInspectable BOOL shouldInteractWithExclusionViews UI_APPEARANCE_SELECTOR;// Defaults is NO.
 @property(copy, nonatomic, nullable) AXAttributedLabelExclusionViewsBlock exclusionViewHandler;
+/// Handler before the data detect.
+@property(copy, nonatomic, nullable) AXAttributedLabelAttributedStringBlock attributedStringHandler;
 
 // Blocks.
 @property(copy, nonatomic, nullable) AXAttributedLabelLinkBlock urlHandler;// Block to handle url info.
